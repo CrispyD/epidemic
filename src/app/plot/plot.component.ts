@@ -38,7 +38,7 @@ export class PlotComponent implements OnInit, OnChanges {
   public lineChartType = 'line';
   public lineChartPlugins = [pluginAnnotations];
 
-  @ViewChild(BaseChartDirective, { static: false })
+  @ViewChild(BaseChartDirective)
   public chart: BaseChartDirective;
 
   constructor() { }
