@@ -155,7 +155,6 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
-
   }
 
   pow10(x){
@@ -197,6 +196,7 @@ export class DashboardComponent implements OnInit {
     return new Date(year,month,day)
   }
 
+  identifierIndex = (index:number, item: any) => index;
 }
 
 //
@@ -230,9 +230,9 @@ function parseCovidTrackingAPI(response,startDate) {
   },output
   )
   for (const value of Object.values(output)) { value.reverse() }
-  output['daily_test'] = ([0]).concat( aM.diff(output['total_tests'] ) )
+  output['daily_test']          = ([0]).concat( aM.diff(output['total_tests'] ) )
   output['daily_test_positive'] = ([0]).concat( aM.diff(output['total_confirmed'] ) )
-  output['daily_fatalities'] = ([0]).concat( aM.diff(output['total_fatalities'] ) )
+  output['daily_fatalities']    = ([0]).concat( aM.diff(output['total_fatalities'] ) )
 
   return output
 }

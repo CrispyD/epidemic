@@ -26,7 +26,7 @@ export class PlotComponent implements OnInit, OnChanges {
         type: 'linear',
         ticks: { 
           callback: (x) => this.dateFromDay(x),
-          maxTicksLimit: 9,
+          minRotation: 30
         },
       },],
       yAxes: []
@@ -38,75 +38,89 @@ export class PlotComponent implements OnInit, OnChanges {
   public lineChartType = 'line';
   public lineChartPlugins = [pluginAnnotations];
 
-  @ViewChild(BaseChartDirective)
-  public chart: BaseChartDirective;
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
   constructor() { }
 
   ngOnInit() {
   }
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {}
-
   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.plotData.currentValue) {
 
       const plotData = changes.plotData.currentValue
+      if (this.lineChartData == undefined) {
+        this.lineChartData = [];
+        this.lineChartColors = []
+        for (const line of plotData.lines) {
+          this.lineChartData.push({
+            data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
+            label: line['label'],
+            yAxisID: 'y',
+            fill: false,
+          });
 
-      this.lineChartData = [];
-      this.lineChartColors = []
-      for (const line of plotData.lines) {
-        this.lineChartData.push({
-          data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
-          label: line['label'],
-          yAxisID: 'y',
-          fill: false,
-        });
+          this.lineChartColors.push( { borderColor: line.color } )
+        }
 
-        this.lineChartColors.push( { borderColor: line.color } )
-      }
-
-      
-      this.lineChartOptions.scales.yAxes = [];
-      const newAxis = {
-        display: true,
-        position: 'left',
-        id: this.lineChartData[0].yAxisID,
-        ticks:{
-          maxTicksLimit: 10,
-          callback: postFix_kMBT  },
-      };
-
-      if (plotData.ylim) {
-        newAxis.ticks['min'] = plotData.ylim[0]
-        newAxis.ticks['max'] = plotData.ylim[1]
-      }
-
-      if (plotData.scale && plotData.scale.type) { 
-        newAxis['type'] = plotData.scale.type
-        newAxis.ticks['min'] = 1
-      }
-      if (plotData.xlim) {
-        this.lineChartOptions.scales.xAxes[0].ticks['min'] = plotData.xlim[0]
-        this.lineChartOptions.scales.xAxes[0].ticks['max'] = plotData.xlim[1]
-      }
-      this.lineChartOptions.scales.yAxes.push(newAxis)
         
+        this.lineChartOptions.scales.yAxes = [];
+        const newAxis = {
+          display: true,
+          position: 'left',
+          id: this.lineChartData[0].yAxisID,
+          ticks:{
+            maxTicksLimit: 10,
+            callback: postFix_kMBT  
+          },
+        };
+
+        if (plotData.ylim) {
+          newAxis.ticks['min'] = plotData.ylim[0]
+          newAxis.ticks['max'] = plotData.ylim[1]
+        }
+
+        if (plotData.scale && plotData.scale.type) { 
+          newAxis['type'] = plotData.scale.type
+          newAxis.ticks['min'] = 1
+        }
+        if (plotData.xlim) {
+          this.lineChartOptions.scales.xAxes[0].ticks['min'] = plotData.xlim[0]
+          this.lineChartOptions.scales.xAxes[0].ticks['max'] = plotData.xlim[1]
+        }
+        this.lineChartOptions.scales.yAxes.push(newAxis)
+      } else {
+        const tempChartData = []
+        plotData.lines.forEach((line,index) =>{
+          const tempLine = {...this.lineChartData[index],
+              data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
+              label: line['label'],
+              yAxisID: 'y',
+              fill: false,
+            }
+          if (this.chart) {
+            if (this.lineChartData[index] && this.lineChartData[index].hidden || this.chart.isDatasetHidden(index)) {
+              tempLine['hidden'] = true
+            } 
+          }
+          tempChartData.push(tempLine)
+        })
+        this.lineChartData = tempChartData
+        const yAxes = this.lineChartOptions.scales.yAxes[0]
+        if (plotData.scale && plotData.scale.type === 'logarithmic') { 
+          yAxes['type'] = plotData.scale.type
+          if (plotData.ylim) {
+            yAxes.ticks = { ...yAxes.ticks, min: 1,  max: plotData.ylim[1] } 
+          }
+        }  else {
+          yAxes['type'] = 'linear'
+          yAxes.ticks = { ...yAxes.ticks, min: 0,  max: undefined }
+        }
+        this.lineChartOptions = {...this.lineChartOptions}
+      }
     }
-  }
-
-  // this is a hack to make charts update when making significant changes (add remove axes)
-  updateChart() {
-    this.chart.chart.destroy(); // Destroy the old chart
-
-    // define the updated chart
-    this.chart.datasets = this.lineChartData;
-    this.chart.options = this.lineChartOptions;
-
-    // initialize the updated chart
-    this.chart.ngOnInit();
-    console.log(this.chart.chart);
   }
 
   // "zips" two data sets together so that they can be plotted against each other

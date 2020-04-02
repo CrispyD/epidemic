@@ -1,23 +1,23 @@
 import * as aM from '../arrayMath'
 
-const duration = 240
+const duration = 260
 
 export const optimistic = {
     simConfig :{
     duration: duration,
     population: 330e6,
     initial_infection: 1,
-    dayOffset:4,
-    R0: 2.6,
+    dayOffset:7,
+    R0: 2.9,
     asymptomatic: 0.2,
     moderate: 0.73,
     severe: 0.05,
     critical: 0.02,
   },
   controls:{
-    days      : [ 0, 50,  70,  84,    91, 121, 182,  365,],
-    social    : [ 1,  1,   1, .65,    .3,  .2,  .2,   .2,].map(x=>{return{value:x} }),
-    tests      : [ 0,  1.1, 3.7,  5.2, 5.4,  6.31, 6.31, 6.31,].map(x=>{return {value:x}}),
+    days      : [ 0,  50,   70,  84,  91, 121, 182,  365,],
+    social    : [ 1,   1,    1, .6,  .25,  .1,  .1,   .1,].map(x=>{return{value:x} }),
+    tests     : [ 0,  1.1, 3.7,  5.1, 5.1,  6.31, 6.31, 6.31,].map(x=>{return {value:x}}),
     testDelay : aM.multiply([ 1, 1,   1,  1,   1,   1,   1,     1, ],5).map(x=>{return {value:x}}),
   }
 }
@@ -28,8 +28,8 @@ export const moderate = {
     duration: duration,
     population: 330e6,
     initial_infection: 1,
-    dayOffset:11,
-    R0: 3.2,
+    dayOffset:7,
+    R0: 2.9,
     asymptomatic: 0.2,
     moderate: 0.73,
     severe: 0.05,
@@ -37,8 +37,8 @@ export const moderate = {
   },
   controls:{
     days      : [ 0, 50,  70,  84,    91, 121, 182,  365,],
-    social    : [ 1,  1,   1, .6,    .25,  .2,  .2,   .2,].map(x=>{return{value:x} }),
-    tests      : [ 0,  1.1, 3.7,  5.2, 5.4,  6.31, 6.31, 6.31,].map(x=>{return {value:x}}),
+    social    : [ 1,  1,   1, .7,    .35,  .1,  .1,   .1,].map(x=>{return{value:x} }),
+    tests      : [ 0,  1.1, 3.7,  5.1, 5.1,  6.31, 6.31, 6.31,].map(x=>{return {value:x}}),
     testDelay : aM.multiply([ 1, 1,   1,  1,   1,   1,   1,     1, ],5).map(x=>{return {value:x}}),
   }
 }
@@ -48,8 +48,8 @@ export const pessimistic = {
     duration: duration,
     population: 330e6,
     initial_infection: 1,
-    dayOffset:16,
-    R0: 3.8,
+    dayOffset:7,
+    R0: 2.9,
     asymptomatic: 0.2,
     moderate: 0.73,
     severe: 0.05,
@@ -57,8 +57,8 @@ export const pessimistic = {
   },
   controls:{
     days      : [ 0, 50,  70,  84,    91, 121, 182,  365,],
-    social    : [ 1,  1,   1, .65,    .3,  .2,  .2,   .2,].map(x=>{return{value:x} }),
-    tests      : [ 0,  1.1, 3.7,  5.2, 5.4,  6.31, 6.31, 6.31,].map(x=>{return {value:x}}),
+    social    : [ 1,  1,   1, .8,    .45,  .1,  .1,   .1,].map(x=>{return{value:x} }),
+    tests      : [ 0,  1.1, 3.7,  5.1, 5.1,  6.31, 6.31, 6.31,].map(x=>{return {value:x}}),
     testDelay : aM.multiply([ 1, 1,   1,  1,   1,   1,   1,     1, ],5).map(x=>{return {value:x}}),
   }
 }

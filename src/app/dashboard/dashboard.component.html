@@ -1,36 +1,35 @@
 
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <span>Outbreak</span>
+        <span>Covid19 Calculator</span>
     </mat-toolbar-row>
     
 </mat-toolbar>
 
 <div class="all-content">
     <h2>
-        WARNING: this is a toy model that is definitely wrong.
-        Even with the best data and models, epidemics are extremely difficult to predict, 
-        and I'm just some guy on the internet. 
+        This is a toy model, don't take any of the results too seriosuly.
     </h2>
 </div>
 
 
 
 <div class="all-content">
-
-        <section class="plot-grid" >
-
+    
+    <section class="plot-grid" >
+        
         <mat-card class="card-option">
             <mat-card-header>
                 <mat-card-title>Reset Conditions</mat-card-title>
                 <mat-card-subtitle>
-                    These cases illustrate how widely the outomes can range with small changes to the model inputs. 
+                    These cases represent three levels of social distancing (SD) effectiveness and roughly corespond to the <a href="https://covid19.healthdata.org/projections">projections made by IHME.</a>
+                    <!-- These cases illustrate how widely the outomes can range with small changes to the model inputs.  -->
                     <!-- It is unlikely the true outcome will be better than the "bad" case, but it could be worse that the "very very bad" case. -->
 
                     <div class="example-button-row">
-                        <button mat-raised-button color="primary" (click)="setCase('optimistic')">Bad</button>
-                        <button mat-raised-button color="accent" (click)="setCase('moderate')">Very Bad</button>
-                        <button mat-raised-button color="warn" (click)="setCase('pessimistic')">Very Very Bad</button>
+                        <button mat-raised-button color="primary" (click)="setCase('optimistic')">High SD effect</button>
+                        <button mat-raised-button color="accent" (click)="setCase('moderate')">Med SD Effec</button>
+                        <button mat-raised-button color="warn" (click)="setCase('pessimistic')">Low SD Effect</button>
                     </div>
                     <div class="example-button-row">
                         <button mat-raised-button color="white" (click)="swapLogarithmic()">{{linLogButton}}</button>
@@ -58,7 +57,7 @@
             </mat-card-content>
         </mat-card>
 
-        <mat-card class="card-plot" *ngFor = "let plot of plotData">
+        <mat-card class="card-plot" *ngFor = "let plot of plotData; trackBy:identifierIndex">
 
             <mat-card-header>
                 <mat-card-title>{{plot.title}}</mat-card-title>
@@ -87,7 +86,7 @@
         
                     <mat-card-content class="multiplot">
                         <div class="slider-box">
-                            <div class="slider" *ngFor="let item of controls.social; let i = index">
+                            <div class="slider" *ngFor="let item of controls.social; let i = index; trackBy:identifierIndex">
                                 <h4>{{dateFromDay(controls.days[i]) | date : 'MMM d'}}</h4>
                                 {{item.value}}
                                 <mat-slider 
@@ -110,12 +109,12 @@
                 <mat-card class="card-control">
                     <mat-card-header>
                         <mat-card-title>Testing</mat-card-title>
-                        <mat-card-subtitle>Number of test carried out per day. The simulation assumes a positive rate of 15% (the other 85% were negative). A 5 day delay in applied to test results. Sliders are logorithmic.</mat-card-subtitle>
+                        <mat-card-subtitle>Number of test carried out per day. The simulation assumes a positive rate of 15% (the other 85% were negative). A 5 day delay is applied to test results. Sliders are logarithmic.</mat-card-subtitle>
                     </mat-card-header>    
         
                     <mat-card-content class="slider-box">
                         <div class="slider"
-                            *ngFor="let item of controls.tests; let i = index">
+                            *ngFor="let item of controls.tests; let i = index; trackBy:identifierIndex">
                                 <h4>{{dateFromDay(controls.days[i]) | date : 'MMM d'}}</h4>
                                 <div>{{pow10(item.value)}}</div>
                                 <mat-slider 

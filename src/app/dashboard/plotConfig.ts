@@ -27,11 +27,11 @@ const black2 ='#212121'
 
 
 const popLim = [0, 350e6]
-const xlim = [0, 156]
+const xlim = [10, 260]
   export const plotConfig = [
         {
             title: 'Total Cases and Fatalities',
-            subtitle: 'Confirmed cases depends significantly on how the numbers are reported, and the number of tests available.',
+            // subtitle: 'Confirmed cases depends significantly on how the numbers are reported, and the number of tests available.',
             scale: { type: 'logarithmic', },
             swapLog: true,
             ylim: popLim,
@@ -49,7 +49,7 @@ const xlim = [0, 156]
     },
     {
         title: 'Daily Cases and Fatalities',
-        subtitle: 'Confirmed cases depends significantly on how the numbers are reported, and the number of tests available.',
+        // subtitle: 'Confirmed cases depends significantly on how the numbers are reported, and the number of tests available.',
         scale: { type: 'logarithmic', },
         swapLog: true,
         ylim: popLim,
@@ -89,7 +89,8 @@ const xlim = [0, 156]
     },
     {
         title: 'R0 - Reproduction Number',
-        subtitle: 'The number of infections resulting from a single infection. If it is below one, the number of cases will reduce and the epidemic will end.',// +
+        subtitle: 'The number of infections resulting from a single infection. If it is below one, the number of cases will reduce and the epidemic will end. ' + 
+        'The "Infected" value is the actual replication in the model. The "Confirmed" value is calculated from modeled daily test results',// +
                 // 'It is significanly effected by our individual behavior, which is why social distancing and hand washing are so important. '+ 
                 // 'It can also be reduced by mass vaccination of the population. ' +
                 // 'Withouth any intervention, it will drop below one naturally as the population becomes immune through infection.',
