@@ -17,7 +17,7 @@ export class PlotComponent implements OnInit, OnChanges {
   lineChartData: ChartDataSets[];
 
   lineChartOptions: ChartOptions = {
-    animation: { duration: 0 },
+    animation: { duration: 250 },
     elements: { point: { radius: 0,} },
     responsive: true,
     maintainAspectRatio: false,
@@ -30,11 +30,11 @@ export class PlotComponent implements OnInit, OnChanges {
         },
       },],
       yAxes: []
-    }
+    },
+    legend:{position:'top'}
   };
 
   public lineChartColors: Color[] = [];
-  public lineChartLegend = { position: 'left' };
   public lineChartType = 'line';
   public lineChartPlugins = [pluginAnnotations];
 
@@ -77,40 +77,25 @@ export class PlotComponent implements OnInit, OnChanges {
           },
         };
 
-        if (plotData.ylim) {
+        if ( plotData.ylim ) {
           newAxis.ticks['min'] = plotData.ylim[0]
           newAxis.ticks['max'] = plotData.ylim[1]
         }
 
-        if (plotData.scale && plotData.scale.type) { 
+        if ( plotData.scale && plotData.scale.type) { 
           newAxis['type'] = plotData.scale.type
           newAxis.ticks['min'] = 1
         }
-        if (plotData.xlim) {
+        if ( plotData.xlim ) {
           this.lineChartOptions.scales.xAxes[0].ticks['min'] = plotData.xlim[0]
           this.lineChartOptions.scales.xAxes[0].ticks['max'] = plotData.xlim[1]
         }
         this.lineChartOptions.scales.yAxes.push(newAxis)
       } else {
-        const tempChartData = []
-        plotData.lines.forEach((line,index) =>{
-          const tempLine = {...this.lineChartData[index],
-              data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
-              label: line['label'],
-              yAxisID: 'y',
-              fill: false,
-            }
-          if (this.chart) {
-            if (this.lineChartData[index] && this.lineChartData[index].hidden || this.chart.isDatasetHidden(index)) {
-              tempLine['hidden'] = true
-            } 
-          }
-          tempChartData.push(tempLine)
-        })
-        this.lineChartData = tempChartData
-        const yAxes = this.lineChartOptions.scales.yAxes[0]
-        if (plotData.scale && plotData.scale.type === 'logarithmic') { 
-          yAxes['type'] = plotData.scale.type
+   
+        const yAxes =this.chart.chart.options.scales.yAxes[0] // just to use a shorter name
+        if ( plotData.scale && plotData.scale.type === 'logarithmic' ) { 
+          yAxes['type'] = 'logarithmic'
           if (plotData.ylim) {
             yAxes.ticks = { ...yAxes.ticks, min: 1,  max: plotData.ylim[1] } 
           }
@@ -118,7 +103,15 @@ export class PlotComponent implements OnInit, OnChanges {
           yAxes['type'] = 'linear'
           yAxes.ticks = { ...yAxes.ticks, min: 0,  max: undefined }
         }
-        this.lineChartOptions = {...this.lineChartOptions}
+
+        plotData.lines.forEach((line,index) =>{
+          this.lineChartData[index] = {...this.lineChartData[index],
+              data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
+              label: line['label'],
+              yAxisID: 'y',
+              fill: false,
+            }
+        })
       }
     }
   }

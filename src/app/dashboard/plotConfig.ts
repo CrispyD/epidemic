@@ -66,7 +66,7 @@ const xlim = [10, 260]
     },
     {
         title: 'Daily Testing',
-        subtitle: '',
+        subtitle: 'The number of confirmed cases is limited by available tests. Without better data, the number of confirmed cases is not useful for estimating total cases.',
         // 'The confirmed cases is often limited by testing and ' +
         // 'has little to do with the number of infections. Many un-infected people are also tested. ' + 
         // 'Only ~15% of test come back positive, so 6-7 tests are required for each confirmed case.',

@@ -32,28 +32,28 @@
                         <button mat-raised-button color="warn" (click)="setCase('pessimistic')">Low SD Effect</button>
                     </div>
                     <div class="example-button-row">
-                        <button mat-raised-button color="white" (click)="swapLogarithmic()">{{linLogButton}}</button>
                     </div>
                 </mat-card-subtitle>
             </mat-card-header>    
-
+            
             <mat-card-content class="multiplot">
             </mat-card-content>
         </mat-card>
-
+        
         <mat-card class="card-option">
-
+            
             <mat-card-header>
                 <mat-card-title>Summary</mat-card-title>
                 <mat-card-subtitle></mat-card-subtitle>
             </mat-card-header>    
-
+            
             <mat-card-content class="multiplot">
                 <ul>
                     <li>Deaths: {{results.total_fatalities.slice(-1)[0]  | number : '1.0-0'}}</li>
                     <li>Confirmed Cases: {{results.total_confirmed.slice(-1)[0]  | number : '1.0-0'}} </li>
                     <li> Total Infections:{{results.total_infected.slice(-1)[0]  | number : '1.0-0'}} </li>
-                  </ul>
+                </ul>
+                <button mat-raised-button color="white" (click)="swapLogarithmic()">{{linLogButton}}</button>
             </mat-card-content>
         </mat-card>
 

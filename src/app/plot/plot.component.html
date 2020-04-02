@@ -1,7 +1,7 @@
 <div  *ngIf="plotData" class="plot">
     <canvas #chart baseChart 
         [datasets]="lineChartData" [options]="lineChartOptions"
-        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+        [colors]="lineChartColors" [chartType]="lineChartType"
         [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)"
         (chartClick)="chartClicked($event)"></canvas>
 </div>
