@@ -4,13 +4,17 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-tab-body-wrapper {
+    display: flex !important;
+    flex-direction: column;
+    align-content: stretch !important;
+    
     flex: 1 !important; 
 }
 
 .mat-tab-body-content {
     display: flex !important;
     flex-direction: column;
-    align-content: stretch;
+    align-content: stretch !important;
 
     flex: 1 !important; 
 }

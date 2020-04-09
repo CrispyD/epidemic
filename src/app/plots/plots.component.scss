@@ -10,12 +10,11 @@
     margin: 0px;
     padding-top: 10px;
 }
-.plot {
-    width: 100%;
-    flex-grow: 1;
 
-    display: flex !important;
-    flex-direction: column;
+.plot {
+    // width: 100%;
+    flex-grow: 1;
+    padding: 5px;
 }
 
 
