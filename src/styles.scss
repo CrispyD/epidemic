@@ -7,7 +7,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: flex !important;
     flex-direction: column;
     align-content: stretch !important;
-    
+
     flex: 1 !important; 
 }
 
@@ -22,7 +22,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-tab-label {
     min-width: 80px !important; 
     padding: 4px !important; 
-    flex: 1
+    flex-grow: 1; 
 }
 
 .mat-tab-labels {
