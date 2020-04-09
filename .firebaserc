@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "covidcalc"
+  },
+  "targets": {
+    "covidcalc": {
+      "hosting": {
+        "epidemic": [
+          "covidcalc"
+        ]
+      }
+    }
+  }
+}
