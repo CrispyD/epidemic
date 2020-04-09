@@ -21,18 +21,18 @@
         </p>
 
         <div class="slider-box" *ngIf="config">
-            <div *ngFor="let item of config.controls.social; let i = index; trackBy:identifierIndex" class="slider">
+            <div *ngFor="let item of config.controls.social; let i = index; trackBy:identifierIndex" class="slider"  matRipple [matRippleRadius]="50">
                 <p class="label">
                     {{dateFromDay(config.controls.days[i]) | date : 'MMM'}}
                     {{dateFromDay(config.controls.days[i]) | date : 'd'}}
                 </p>
                 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button" (click)=increment(item)>keyboard_arrow_up</mat-icon>
 
                 <p class="value">{{item.value | number:'1.2-3'}}</p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button"(click)=decrement(item)>keyboard_arrow_down</mat-icon>
 
             </div>
@@ -49,18 +49,18 @@
         </p>
 
         <div class="slider-box" *ngIf="config">
-            <div *ngFor="let item of config.controls.tests; let i = index; trackBy:identifierIndex" class="slider">
+            <div *ngFor="let item of config.controls.tests; let i = index; trackBy:identifierIndex" class="slider" matRipple [matRippleRadius]="50">
                 <p class="label">
                     {{dateFromDay(config.controls.days[i]) | date : 'MMM'}}
                     {{dateFromDay(config.controls.days[i]) | date : 'd'}}
                 </p>
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon 
                 class="icon-button" (click)=incrementTesting(item)>keyboard_arrow_up
                 </mat-icon>
 
                 <p class="value">{{pow10(item.value)}}</p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon 
                     class="icon-button"(click)=decrementTesting(item)>keyboard_arrow_down
                 </mat-icon>
 
@@ -76,22 +76,22 @@
         </p>
 
         <div *ngIf="config" class="slider-box">
-            <div class="slider">
+            <div class="slider" matRipple [matRippleRadius]="50">
                 <p class="label">R0</p>
-                <mat-icon matRipple [matRippleUnbounded]="true"
+                <mat-icon
                 class="icon-button" (click)=incrementItem(config.sim.R0)>keyboard_arrow_up</mat-icon>
                 
                 <p class="value">{{config.sim.R0.value}}</p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon 
                     class="icon-button"(click)=decrementItem(config.sim.R0)>keyboard_arrow_down
                 </mat-icon>
 
             </div>
 
-            <div  class="slider">
+            <div  class="slider" matRipple [matRippleRadius]="50">
                 <p class="label">First Infection</p>
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button" (click)=incrementItem(this.config.sim.dayOffset)>keyboard_arrow_up
                 </mat-icon>
                 
@@ -99,15 +99,15 @@
                     {{ dateFromDay(this.config.sim.dayOffset.value) | date : 'MMM d' }}
                 </p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button"(click)=decrementItem(this.config.sim.dayOffset)>keyboard_arrow_down
                 </mat-icon>
 
             </div>
 
-            <div  class="slider">
+            <div  class="slider"  matRipple [matRippleRadius]="50">
                 <p class="label">Pop.</p>
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon 
                     class="icon-button" (click)=incrementItem(config.sim.population)>keyboard_arrow_up
                 </mat-icon>
                 
@@ -115,15 +115,15 @@
                     {{postFix_kMBT(config.sim.population.value)}}
                 </p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button"(click)=decrementItem(config.sim.population)>keyboard_arrow_down
                 </mat-icon>
 
                 </div>
 
-            <div class="slider">
+            <div class="slider"  matRipple [matRippleRadius]="50">
                 <p class="label">Asymp- tomatic</p>
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon 
                     class="icon-button" (click)=incrementItem(config.sim.asymptomatic)>keyboard_arrow_up
                 </mat-icon>
                 
@@ -131,14 +131,14 @@
                     {{config.sim.asymptomatic.value | percent:'0.0-2'}}
                 </p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button"(click)=decrementItem(config.sim.asymptomatic)>keyboard_arrow_down
                 </mat-icon>
             </div>
 
-            <div class="slider">
+            <div class="slider"  matRipple [matRippleRadius]="50">
                 <p class="label">Moderate</p>
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button" (click)=incrementItem(config.sim.moderate)>keyboard_arrow_up
                 </mat-icon>
                 
@@ -146,14 +146,14 @@
                     {{config.sim.moderate.value | percent:'0.0-2'}}
                 </p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button"(click)=decrementItem(config.sim.moderate)>keyboard_arrow_down
                 </mat-icon>
 
             </div>  
-            <div class="slider">
+            <div class="slider"  matRipple [matRippleRadius]="50">
                 <p class="label">Severe</p>
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button" (click)=incrementItem(config.sim.severe)>keyboard_arrow_up
                 </mat-icon>
                 
@@ -161,14 +161,14 @@
                     {{config.sim.severe.value | percent:'0.0-2'}}
                 </p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button"(click)=decrementItem(config.sim.severe)>keyboard_arrow_down
                 </mat-icon>
 
                 </div>   
-            <div class="slider">
+            <div class="slider" matRipple [matRippleRadius]="50">
                 <p class="label">Critical</p>
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button" (click)=incrementItem(config.sim.critical)>keyboard_arrow_up
                 </mat-icon>
                 
@@ -176,7 +176,7 @@
                     {{config.sim.critical.value | percent:'0.0-2'}}
                 </p>
 
-                <mat-icon matRipple [matRippleUnbounded]="true" 
+                <mat-icon
                     class="icon-button"(click)=decrementItem(config.sim.critical)>keyboard_arrow_down
                 </mat-icon>
             </div> 
