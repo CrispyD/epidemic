@@ -25,13 +25,13 @@ export class PlotComponent implements OnInit, OnChanges {
       xAxes: [{
         type: 'linear',
         ticks: { 
-          callback: (x) => this.dateFromDay(x),
-          minRotation: 30
+          callback: (x,y,z) => this.dateFromDay(x,y,z),
+          minRotation: 30,
         },
       },],
       yAxes: []
     },
-    legend:{position:'top'}
+    legend:{position:'top',display:false}
   };
 
   public lineChartColors: Color[] = [];
@@ -57,6 +57,7 @@ export class PlotComponent implements OnInit, OnChanges {
         for (const line of plotData.lines) {
           this.lineChartData.push({
             data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
+            lineTension: 0,  
             label: line['label'],
             yAxisID: 'y',
             fill: false,
@@ -99,22 +100,27 @@ export class PlotComponent implements OnInit, OnChanges {
           if (plotData.ylim) {
             yAxes.ticks = { ...yAxes.ticks, min: 1,  max: plotData.ylim[1] } 
           }
-        }  else {
+        }  else if ( plotData.scale && plotData.scale.type === 'linear' )  {
           yAxes['type'] = 'linear'
           yAxes.ticks = { ...yAxes.ticks, min: 0,  max: undefined }
+        } else if ( plotData.ylim ) {
+          yAxes.ticks = { ...yAxes.ticks, min: plotData.ylim[0],  max: plotData.ylim[1] } 
         }
 
         plotData.lines.forEach((line,index) =>{
           this.lineChartData[index] = {...this.lineChartData[index],
               data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
+              lineTension: 0,  
               label: line['label'],
               yAxisID: 'y',
               fill: false,
+              hidden:line.hidden,
             }
         })
       }
     }
   }
+
 
   // "zips" two data sets together so that they can be plotted against each other
   zip(ar1, ar2, zipper) {
@@ -134,7 +140,7 @@ export class PlotComponent implements OnInit, OnChanges {
     return Math.ceil(Math.max(...value) / round) * round;
   }
 
-  dateFromDay(x){
+  dateFromDay(x,y,z){
     const jan1 = new Date(2020, 0); // initialize a date in `year-01-01`
     const today = new Date(jan1.setDate(x+1))
     const month = today.getMonth()

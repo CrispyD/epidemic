@@ -1,0 +1,6 @@
+<canvas #chart baseChart  class="plot"
+    [datasets]="lineChartData" [options]="lineChartOptions"
+    [colors]="lineChartColors" [chartType]="lineChartType"
+    [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)">
+</canvas>

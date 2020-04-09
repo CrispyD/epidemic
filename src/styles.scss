@@ -2,3 +2,27 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-tab-body-wrapper {
+    flex: 1 !important; 
+}
+
+.mat-tab-body-content {
+    display: flex !important;
+    flex-direction: column;
+    align-content: stretch;
+
+    flex: 1 !important; 
+}
+
+.mat-tab-label {
+    min-width: 80px !important; 
+    padding: 4px !important; 
+    flex: 1
+}
+
+.mat-tab-labels {
+    text-align:center;
+    display: flex !important;
+}
+

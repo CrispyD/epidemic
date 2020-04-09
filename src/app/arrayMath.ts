@@ -109,8 +109,9 @@ export function interp1d(X,Y) {
     const dX = diff(X)
     const dY = diff(Y)
     return (x) => {
+        if (x<=X[0]) {return Y[0]} // nearest extrapolation at beginning
+        if (x>=X.slice(-1)) { return Y.slice(-1)[0] } // nearest extrapolation at end
         let ind = findBin(X,x)
-        if (ind==-1) {ind = 0}
         return Y[ind] + dY[ind] * (x - X[ind]) / dX[ind]
     }
 }

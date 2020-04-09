@@ -1,0 +1,70 @@
+.tab-group {
+    height: 100%;
+    width: 100%;
+}
+
+.slider-box {
+    width: 100%;
+    height: 140px;
+    margin-top: auto;
+    margin-bottom: 5px;
+
+    display: flex;
+    justify-content: center;
+    font-size: 10pt;
+}
+
+.slider {
+    flex: 1;
+    border-style: solid;
+    border-radius: 3px;
+    border-color: grey;
+    border-width: 0.5px;
+    
+    min-height: 0;
+    min-width: 0;
+    max-width: 55px;
+    margin: 2px;
+    
+    display: flex;
+    flex-flow: column;
+    
+    align-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+.label {
+    font-size: 8pt;
+    height: 30px ;
+    padding: 0px;
+}
+
+.value {
+    flex: 1;
+}
+
+.icon-button {
+    flex: 2;
+    height: 60px;
+    width: 60px;
+    cursor: pointer;
+}
+
+.description {
+    font-size: 10pt;
+}
+
+.case-box { 
+    align-items: center;
+    max-width: 95%;
+    display: grid;
+    flex-wrap: wrap;
+    gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.case {
+    margin: 0 20px;
+}

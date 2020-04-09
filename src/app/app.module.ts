@@ -11,16 +11,24 @@ import { MaterialModule } from './material.module';
 
 // Components
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { PlotComponent } from './plot/plot.component';
+import { PlotComponent } from './tools/plot/plot.component';
 
 // Chart imports
 import { ChartsModule } from 'ng2-charts';
+import { ControlsComponent } from './controls/controls.component';
+import { PlotsComponent } from './plots/plots.component';
+import { SummaryComponent } from './summary/summary.component';
+import { NumberKMBTPipe } from './number-kmbt.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    PlotComponent
+    PlotComponent,
+    ControlsComponent,
+    PlotsComponent,
+    SummaryComponent,
+    NumberKMBTPipe
   ],
   imports: [
     BrowserModule,

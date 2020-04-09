@@ -1,6 +1,6 @@
 
 import * as aM from '../arrayMath'
-
+import { DataSet } from '../data/data-model'
 
 function makeCourse(courseDef, sim_duration) {
     const masksLabels = ['contagious', 'symptomatic','hospital','ventalator']
@@ -62,12 +62,12 @@ function makeCourse(courseDef, sim_duration) {
 
 export function initializeDiseseCourses(simConfig, diseaseDefinition) {
     
-    const sim_duration = simConfig.duration
+    const sim_duration = simConfig.duration.value
     const course_distribution = [
-        simConfig.asymptomatic, 
-        simConfig.moderate, 
-        simConfig.severe, 
-        simConfig.critical]
+        simConfig.asymptomatic.value, 
+        simConfig.moderate.value, 
+        simConfig.severe.value, 
+        simConfig.critical.value]
 
     // initialize population and infection
     const diseaseCourses = []
@@ -76,10 +76,10 @@ export function initializeDiseseCourses(simConfig, diseaseDefinition) {
     }
 
     diseaseCourses.forEach( (course,i) => {
-        course['state'][0][0] =  (simConfig.population - simConfig.initial_infection)  * course_distribution[i] 
+        course['state'][0][0] =  (simConfig.population.value - simConfig.initial_infection.value)  * course_distribution[i] 
     })
 
-    diseaseCourses[1]['state'][0][1] = simConfig.initial_infection
+    diseaseCourses[1]['state'][0][1] = simConfig.initial_infection.value
     
 
     return diseaseCourses
@@ -89,31 +89,32 @@ export function simulateDisease(simConfig, diseaseCourses, social_spread,
     tests_available, test_delay, tests_success, contagiousDurration) {
         
     // initialize outputs
-    const daily_infections = aM.zeros(simConfig.duration)
-    const total_susceptible = aM.zeros(simConfig.duration)
-    const total_resolved = aM.zeros(simConfig.duration)
-    const daily_infected = aM.zeros(simConfig.duration)
-    const total_contagious = aM.zeros(simConfig.duration)
-    const daily_fatalities = aM.zeros(simConfig.duration)
-    const total_pending = aM.zeros(simConfig.duration)
-    const total_confirmed = aM.zeros(simConfig.duration)
-    const active_confirmed = aM.zeros(simConfig.duration)
-    const daily_total_test_need = aM.zeros(simConfig.duration)
-    const daily_infected_test_need = aM.zeros(simConfig.duration)
-    const daily_test_avail = aM.zeros(simConfig.duration)
-   
+    const daily_infections = aM.zeros(simConfig.duration.value)
+    const total_susceptible = aM.zeros(simConfig.duration.value)
+    const total_resolved = aM.zeros(simConfig.duration.value)
+    const daily_infected = aM.zeros(simConfig.duration.value)
+    const total_contagious = aM.zeros(simConfig.duration.value)
+    const daily_fatalities = aM.zeros(simConfig.duration.value)
+    const total_pending = aM.zeros(simConfig.duration.value)
+    const total_confirmed = aM.zeros(simConfig.duration.value)
+    const active_confirmed = aM.zeros(simConfig.duration.value)
+    const daily_total_test_need = aM.zeros(simConfig.duration.value)
+    const daily_infected_test_need = aM.zeros(simConfig.duration.value)
+    const daily_test_avail = aM.zeros(simConfig.duration.value)
+    const daily_first_symptoms = aM.zeros(simConfig.duration.value)
     
-    const days = aM.range(simConfig.dayOffset,simConfig.dayOffset + simConfig.duration)
+    
+    const days = aM.range(simConfig.dayOffset.value,simConfig.dayOffset.value + simConfig.duration.value)
     
     let test_pos_rate
     let test_delay_rate
-    for (const i of aM.range(0,simConfig.duration)) {
+    for (const i of aM.range(0,simConfig.duration.value)) {
         const day = days[i]
         //// Infection
         for (const course of diseaseCourses) {
             total_susceptible[i] += course['state'][i][0]
             total_resolved[i] += course['state'][i].slice(-1)[0]
-            daily_infected[i] += aM.sum(course['state'][i].slice(1,-1))
+            // daily_infected[i] += aM.sum(course['state'][i].slice(1,-1))
 
             total_contagious[i] += aM.sum( aM.getMask( course['state'][i], course['contagious'] ) )
             total_confirmed[i] += aM.sum(course['confirmed'][i])
@@ -131,11 +132,11 @@ export function simulateDisease(simConfig, diseaseCourses, social_spread,
             daily_test_avail[i] = tests_available(day) 
             daily_total_test_need[i] = daily_infected_test_need[i] / tests_success(day)
 
-        if (day == 70) {
+        if (day == 50) {
             const stop = true
          }
         
-        const susceptible_progression = social_spread(day) * total_contagious[i] / simConfig.population 
+        const susceptible_progression = social_spread(day) * total_contagious[i] / simConfig.population.value
         
         //// testing
         if (daily_infected_test_need[i] == 0) {test_pos_rate = 1} // no one needs a test, so don't divide by zero
@@ -222,6 +223,9 @@ export function simulateDisease(simConfig, diseaseCourses, social_spread,
                 daily_infections[i] += state_change[0]
 
                 //// update testing
+                if ( aM.any(course.symptomatic) ) {
+                    daily_first_symptoms[i] += aM.getMask([0].concat(state_change),course.symptomatic).slice(0)[0] / tests_success(day)
+                }
                 const confirmed_change = aM.multiply(course['confirmed'][i].slice(0,-1), todays_progression)
                 course['confirmed'][i+1]     = [...course['confirmed'][i]]
                 
@@ -250,6 +254,13 @@ export function simulateDisease(simConfig, diseaseCourses, social_spread,
 
         
     }
+
+    const total_tests = aM.cumsum(daily_test_avail)
+    const total_test_needed = aM.cumsum(daily_first_symptoms)
+    // const total_tests_backlog = aM.cumsum(daily_first_symptoms)
+    // const total_tests_need = 
+    const daily_confirmed = ([0]).concat( aM.diff(total_confirmed) )
+
     const total_infected = aM.cumsum(daily_infections)
 
     const daily_test_pos = aM.diff( ([0]).concat( total_confirmed ) )
@@ -261,33 +272,39 @@ export function simulateDisease(simConfig, diseaseCourses, social_spread,
     aM.setMask(measured_R0,0,aM.isNaN(measured_R0))
     const daily_test_pending =  aM.diff( ([0]).concat( total_pending ) )
 
-    const results = {
-        diseaseCourses: diseaseCourses,
+    const results : DataSet = {
+        label:'Model',
+        channels:{
+            diseaseCourses: {label:'',value:diseaseCourses},
+            total_susceptible: {label:'',value: total_susceptible},
+            total_resolved: {label:'',value: total_resolved},
+            total_infected: {label:'',value: total_infected},
+            daily_infected: {label:'',value: daily_infected},
+            daily_infections: {label:'',value: daily_infections},
+    
+            total_contagious: {label:'',value:total_contagious},
+            total_confirmed: {label:'',value:total_confirmed},
+            daily_confirmed: {label:'',value:daily_confirmed},
+            active_confirmed: {label:'',value:active_confirmed},
+    
+            daily_fatalities: {label:'',value: daily_fatalities},
+            total_fatalities: {label:'',value: aM.cumsum(daily_fatalities)},
+    
+            total_tests: {label:'',value: total_tests}, 
+            daily_infected_test_need: {label:'',value: daily_infected_test_need},
+            daily_total_test_need: {label:'',value: daily_total_test_need},
+            daily_test_avail: {label:'',value: daily_test_avail},
+            daily_test_pending: {label:'',value: daily_test_pending},
+            daily_test_pos: {label:'',value: aM.diff( ([0]).concat( total_confirmed ) )},
+            total_test_pending: {label:'',value: total_pending},
+            daily_untested: {label:'',value: aM.subtract(daily_infected_test_need,aM.add(daily_test_pos, daily_test_pending))},
+            total_test_needed: {label:'',value: total_test_needed},
 
-        total_susceptible: total_susceptible,
-        total_resolved: total_resolved,
-        total_infected: total_infected,
-        daily_infected: daily_infected,
-        daily_infections: daily_infections,
-
-        total_contagious:total_contagious,
-        total_confirmed:total_confirmed,
-        active_confirmed:active_confirmed,
-
-        daily_fatalities: daily_fatalities,
-        total_fatalities: aM.cumsum(daily_fatalities),
-
-        daily_infected_test_need: daily_infected_test_need,
-        daily_total_test_need: daily_total_test_need,
-        daily_test_avail: daily_test_avail,
-        daily_test_pending: daily_test_pending,
-        daily_test_pos: aM.diff( ([0]).concat( total_confirmed ) ),
-        total_test_pending: total_pending,
-        daily_untested: aM.subtract(daily_infected_test_need,aM.add(daily_test_pos, daily_test_pending)),
-
-        real_R0: real_R0,
-        measured_R0: measured_R0,
-        days: days
+    
+            real_R0: {label:'',value: real_R0},
+            measured_R0: {label:'',value: measured_R0},
+            days: {label:'',value: days},
+        }
     }
     return results
 }

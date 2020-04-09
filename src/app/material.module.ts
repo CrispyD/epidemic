@@ -4,19 +4,24 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-// import { LayoutModule } from '@angular/cdk/layout';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import {MatRippleModule} from '@angular/material/core';
+
 // import { MatSidenavModule } from '@angular/material/sidenav';
 // import { MatListModule } from '@angular/material/list';
 // import { MatTableModule } from '@angular/material/table';
 // import { MatPaginatorModule } from '@angular/material/paginator';
 // import { MatCheckboxModule } from '@angular/material/checkbox';
 // import { MatSortModule } from '@angular/material/sort';
-// import { MatInputModule } from '@angular/material/input';
 // import { MatFormFieldModule } from '@angular/material/form-field';
 // import { MatProgressBarModule } from '@angular/material/progress-bar';
 // import { MatDividerModule } from '@angular/material/divider';
@@ -31,14 +36,18 @@ import { MatSliderModule } from '@angular/material/slider';
 const modules = [
   CommonModule,
   FormsModule,
-  // LayoutModule,
+  LayoutModule,
   MatToolbarModule,
   MatButtonModule,
   MatIconModule,
   MatTabsModule,
   MatCardModule,
   MatSliderModule,
-  // MatInputModule,
+  MatButtonToggleModule,
+  MatChipsModule,
+  MatSlideToggleModule,
+  MatInputModule,
+  MatRippleModule,
   // MatSidenavModule,
   // MatListModule,
   // MatTableModule,
