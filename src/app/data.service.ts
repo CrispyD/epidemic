@@ -48,6 +48,7 @@ export class DataService {
     this.resetPlot()
     this.setCase('optimistic')
     this.loadData()
+    this.toggleDailyTotal()
   }
 
   toggleDailyTotal() {
