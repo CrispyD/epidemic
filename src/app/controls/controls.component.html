@@ -17,7 +17,7 @@
 
         <p class="description">
             <strong>Social Mitigation Effectiveness</strong> <br>
-            Effect of social behavior on disease transmission. A value of 1, is "buisness as usual", and 0 is total isolation.
+            Effect of social behavior on disease transmission, including: physical distancing, handwashing, travel restrictions, etc.. A value of 1, is "buisness as usual", and 0 is total isolation.
         </p>
 
         <div class="slider-box" *ngIf="config">
@@ -45,7 +45,7 @@
 
         <p class="description">
             <strong>Number of Tests Available Per Day</strong> <br>
-            The model assumes a 15% positive rate and a 5 day delay.
+            The number of test available each day. The model assumes a 15% positive rate and a 5 day delay. Adjustments are logarithmic.
         </p>
 
         <div class="slider-box" *ngIf="config">
