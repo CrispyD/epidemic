@@ -26,7 +26,7 @@ const black ='#212121'
 const black2 ='#212121'
 
 const popLim = [0, 350e6]
-const xlim = [10, 260]
+const xlim = [0, 244]
   export const plotConfig = [
         {
             title: 'Total Cases and Fatalities',

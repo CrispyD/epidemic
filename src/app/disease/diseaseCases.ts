@@ -1,6 +1,6 @@
 import * as aM from '../arrayMath'
 
-const duration = 260
+const duration = 270
 
 export const optimistic = {
   label:'Large Effect',
@@ -16,10 +16,10 @@ export const optimistic = {
     critical:           {value: 0.02, min:0.0,max:0.1, step:.01, round:2},
 },
   controls:{
-    days      : [  50,   70,  84,  91, 121, 182, ],
-    social    : [   1,    1, .6,  .25,  .1,  .1,  ].map(x=>{return{value:x} }),
-    tests      : [  .8, 4,  5.1, 5.3,  5.3, 5.3, ].map(x=>{return {value:x}}),
-    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
+    days      : [  50,   70,  84,  91, 121, 152, 182, ],
+    social    : [   1,    1, .6,  .25,  .1, .1, .25,  ].map(x=>{return{value:x} }),
+    tests      : [  .8, 4,  5.1, 5.3,  5.3, 5.3, 5.3, ].map(x=>{return {value:x}}),
+    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
   }
 }
 
@@ -38,10 +38,10 @@ export const moderate = {
       critical:           {value: 0.02, min:0.0,max:0.1, step:.01, round:2},
   },
   controls:{
-    days      : [ 50,  70,  84,    91, 121, 182,  ],
-    social    : [  1,   1, .7,    .35,  .1,  .1,   ].map(x=>{return{value:x} }),
-    tests      : [  .8, 4,  5.1, 5.3,  5.3, 5.3, ].map(x=>{return {value:x}}),
-    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
+    days      : [  50,   70,  84,  91, 121, 152, 182, ],
+    social    : [  1,   1, .7,    .35,  .1, .1,  .25,   ].map(x=>{return{value:x} }),
+    tests      : [  .8, 4,  5.1, 5.3,  5.3, 5.3, 5.3, ].map(x=>{return {value:x}}),
+    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
   }
 }
 
@@ -59,10 +59,10 @@ export const pessimistic = {
     critical:           {value: 0.02, min:0.0,max:0.1, step:.01, round:2},
 },
   controls:{
-    days      : [ 50,  70,  84,    91, 121, 182,  ],
-    social    : [  1,   1, .8,    .45,  .1,  .1,   ].map(x=>{return{value:x} }),
-    tests      : [  .8, 4,  5.1, 5.3,  5.3, 5.3, ].map(x=>{return {value:x}}),
-    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
+    days      : [  50,   70,  84,  91, 121, 152, 182, ],
+    social    : [  1,   1, .8,    .45,  .1,  .1,  .25,   ].map(x=>{return{value:x} }),
+    tests      : [  .8, 4,  5.1, 5.3,  5.3, 5.3, 5.3, ].map(x=>{return {value:x}}),
+    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
   }
 }
 
@@ -80,9 +80,9 @@ export const noAction = {
     critical:           {value: 0.02, min:0.0,max:0.1, step:.01, round:2},
 },
   controls:{
-    days      : [  50, 70,  84,  91, 121, 182,  ],
-    social    : [   1,  1,   1,   1,   1,   1,   ].map(x=>{return{value:x} }),
-    tests     : [  .8,  4, 5.1, 5.7, 6, 6, ].map(x=>{return {value:x}}),
-    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
+    days      : [  50, 70,  84,  91, 121, 152, 182, ],
+    social    : [   1,  1,   1,   1,   1,   1,   1,   ].map(x=>{return{value:x} }),
+    tests     : [  .8,  4, 5.1, 5.7, 5.9,   6,   6, ].map(x=>{return {value:x}}),
+    testDelay : aM.multiply([  1,   1,  1,   1,   1,   1,   1,   ],5).map(x=>{return {value:x}}),
   }
 }
