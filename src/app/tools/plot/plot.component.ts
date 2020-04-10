@@ -38,7 +38,8 @@ export class PlotComponent implements OnInit, OnChanges {
           return this.dateFromDay(x[0].xLabel,null)
         },
         label: (x,y) => {
-          return postFix_kMBT(x.yLabel)
+          const dataSetName = y.datasets[x.datasetIndex].label + ": "
+          return dataSetName + postFix_kMBT(x.yLabel)
         }
       }
     }
@@ -160,11 +161,15 @@ export class PlotComponent implements OnInit, OnChanges {
 }
 
 function postFix_kMBT(x) {
-  if (x >= 1e-3 && x < 1e0) { return Math.round(x*1e2)/1e2 +' '}
-  if (x >= 1e0 && x < 1e3) { return Math.round(x*10)/10 +' '}
-  if (x >= 1e3 && x < 1e6) { return Math.round(x/1e2)/10 + 'k' }
-  if (x >= 1e6 && x < 1e9) { return Math.round(x/1e5)/10 + 'M' }
-  if (x >= 1e9 && x < 1e12) { return Math.round(x/1e8)/10 + 'B' }
-  if (x >= 1e12 && x < 1e15) { return Math.round(x/1e11)/10 + 'T' }
+  let sign = ''
+  let value
+  if (x<0) {sign='-'; x = -x}
+  if (x >= 1e-3 && x < 1e0) { value =  Math.round(x*1e2)/1e2 +' '}
+  if (x >= 1e0 && x < 1e3) { value =  Math.round(x*10)/10 +' '}
+  if (x >= 1e3 && x < 1e6) { value =  Math.round(x/1e2)/10 + 'k' }
+  if (x >= 1e6 && x < 1e9) { value =  Math.round(x/1e5)/10 + 'M' }
+  if (x >= 1e9 && x < 1e12) { value =  Math.round(x/1e8)/10 + 'B' }
+  if (x >= 1e12 && x < 1e15) { value =  Math.round(x/1e11)/10 + 'T' }
+  return sign + value
 }
 
