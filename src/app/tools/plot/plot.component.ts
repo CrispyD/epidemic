@@ -38,7 +38,8 @@ export class PlotComponent implements OnInit, OnChanges {
           return this.dateFromDay(x[0].xLabel,null)
         },
         label: (x,y) => {
-          return postFix_kMBT(x.yLabel)
+          const dataSetName = y.datasets[x.datasetIndex].label + ": "
+          return dataSetName + postFix_kMBT(x.yLabel)
         }
       }
     }
