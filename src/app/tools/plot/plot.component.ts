@@ -164,7 +164,7 @@ function postFix_kMBT(x) {
   let sign = ''
   let value
   if (x<0) {sign='-'; x = -x}
-  if (x >= 1e-3 && x < 1e0) { value =  Math.round(x*1e2)/1e2 +' '}
+  if (x >= 0 && x < 1e0) { value =  Math.round(x*1e2)/1e2 +' '}
   if (x >= 1e0 && x < 1e3) { value =  Math.round(x*10)/10 +' '}
   if (x >= 1e3 && x < 1e6) { value =  Math.round(x/1e2)/10 + 'k' }
   if (x >= 1e6 && x < 1e9) { value =  Math.round(x/1e5)/10 + 'M' }
