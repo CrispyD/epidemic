@@ -25,13 +25,23 @@ export class PlotComponent implements OnInit, OnChanges {
       xAxes: [{
         type: 'linear',
         ticks: { 
-          callback: (x,y,z) => this.dateFromDay(x,y,z),
+          callback: (x,y) => this.dateFromDay(x,y),
           minRotation: 30,
         },
       },],
       yAxes: []
     },
-    legend:{position:'top',display:false}
+    legend:{position:'top',display:false},
+    tooltips:{
+      callbacks:{
+        title: (x,y) => {
+          return this.dateFromDay(x[0].xLabel,null)
+        },
+        label: (x,y) => {
+          return postFix_kMBT(x.yLabel)
+        }
+      }
+    }
   };
 
   public lineChartColors: Color[] = [];
@@ -140,7 +150,7 @@ export class PlotComponent implements OnInit, OnChanges {
     return Math.ceil(Math.max(...value) / round) * round;
   }
 
-  dateFromDay(x,y,z){
+  dateFromDay(x,y){
     const jan1 = new Date(2020, 0); // initialize a date in `year-01-01`
     const today = new Date(jan1.setDate(x+1))
     const month = today.getMonth()
@@ -151,7 +161,7 @@ export class PlotComponent implements OnInit, OnChanges {
 
 function postFix_kMBT(x) {
   if (x >= 1e-3 && x < 1e0) { return Math.round(x*1e2)/1e2 +' '}
-  if (x >= 1e0 && x < 1e3) { return Math.round(x) +' '}
+  if (x >= 1e0 && x < 1e3) { return Math.round(x*10)/10 +' '}
   if (x >= 1e3 && x < 1e6) { return Math.round(x/1e2)/10 + 'k' }
   if (x >= 1e6 && x < 1e9) { return Math.round(x/1e5)/10 + 'M' }
   if (x >= 1e9 && x < 1e12) { return Math.round(x/1e8)/10 + 'B' }
