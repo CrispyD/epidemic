@@ -7,8 +7,8 @@ export const optimistic = {
   simConfig :{
     duration:           {value: duration, step:1, round:0},
     population:         {value: 330e6, step:1e6, round:-6},
-    initial_infection:  {value: 1,    step:1, round:0},
-    dayOffset:          {value: 7,    step:1, round:0},
+    initial_infection:  {value: 10,    step:1, round:0},
+    dayOffset:          {value: 15,    step:1, round:0},
     R0:                 {value: 2.9,  min:0, max:5, step:.1, round:1},
     asymptomatic:       {value: 0.2,  min:0, max:0.7, step:.01, round:2},
     moderate:           {value: 0.73, min:0.0,max:1.0, step:.01, round:2},
@@ -29,8 +29,8 @@ export const moderate = {
     simConfig :{
       duration:           {value: duration, step:1, round:0},
       population:         {value: 330e6, step:1e6, round:-6},
-      initial_infection:  {value: 1,    step:1, round:0},
-      dayOffset:          {value: 7,    step:1, round:0},
+      initial_infection:  {value: 10,    step:1, round:0},
+      dayOffset:          {value: 15,    step:1, round:0},
       R0:                 {value: 2.9,  min:0, max:5, step:.1, round:1},
       asymptomatic:       {value: 0.2,  min:0, max:0.7, step:.01, round:2},
       moderate:           {value: 0.73, min:0.0,max:1.0, step:.01, round:2},
@@ -50,8 +50,8 @@ export const pessimistic = {
   simConfig :{
     duration:           {value: duration, step:1, round:0},
     population:         {value: 330e6, step:1e6, round:-6},
-    initial_infection:  {value: 1,    step:1, round:0},
-    dayOffset:          {value: 7,    step:1, round:0},
+    initial_infection:  {value: 10,    step:1, round:0},
+    dayOffset:          {value: 15,    step:1, round:0},
     R0:                 {value: 2.9,  min:0, max:5, step:.1, round:1},
     asymptomatic:       {value: 0.2,  min:0, max:0.7, step:.01, round:2},
     moderate:           {value: 0.73, min:0.0,max:1.0, step:.01, round:2},
@@ -71,8 +71,8 @@ export const noAction = {
   simConfig :{
     duration:           {value: duration, step:1, round:0},
     population:         {value: 330e6, step:1e6, round:-6},
-    initial_infection:  {value: 1,    step:1, round:0},
-    dayOffset:          {value: 7,    step:1, round:0},
+    initial_infection:  {value: 10,    step:1, round:0},
+    dayOffset:          {value: 15,    step:1, round:0},
     R0:                 {value: 2.9,  min:0, max:5, step:.1, round:1},
     asymptomatic:       {value: 0.2,  min:0, max:0.7, step:.01, round:2},
     moderate:           {value: 0.73, min:0.0,max:1.0, step:.01, round:2},
