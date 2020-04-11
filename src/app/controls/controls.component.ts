@@ -73,17 +73,17 @@ export class ControlsComponent implements OnInit {
 
   incrementItem(item) {
     item.value += item.step
-    if(item.min) {item.value = Math.max(item.value,item.min);}
-    if (item.max) {item.value = Math.min(item.value,item.max);}
-    if (item.round) {item.value = Math.round(item.value*Math.pow(10,item.round))/Math.pow(10,item.round);}
+    if(!isNaN(item.min)) {item.value = Math.max(item.value,item.min);}
+    if (!isNaN(item.max)) {item.value = Math.min(item.value,item.max);}
+    if (!isNaN(item.round)) {item.value = Math.round(item.value*Math.pow(10,item.round))/Math.pow(10,item.round);}
     this.updateConfig()
   }
 
   decrementItem(item) {
     item.value -= item.step
-    if(item.min) {item.value = Math.max(item.value,item.min);}
-    if (item.max) {item.value = Math.min(item.value,item.max);}
-    if (item.round) {item.value = Math.round(item.value*Math.pow(10,item.round))/Math.pow(10,item.round);}
+    if(!isNaN(item.min)) {item.value = Math.max(item.value,item.min);}
+    if (!isNaN(item.max)) {item.value = Math.min(item.value,item.max);}
+    if (!isNaN(item.round)) {item.value = Math.round(item.value*Math.pow(10,item.round))/Math.pow(10,item.round);}
     this.updateConfig()
   }
 

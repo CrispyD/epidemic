@@ -155,26 +155,18 @@ export class DataService {
         ) )
     });
 
-    const courseAvgTransmisionDays = []
-    const courseContagiousRatio = []
+    const courseContagiousDays = []
     this.diseaseCourses.forEach(course => {
-      const steps = aM.divide(1,course['progression'])
-      const days = aM.subtract(aM.cumsum(steps),aM.multiply(steps,0.5))
-      const contagiousSteps = aM.getMask(steps,course.contagious)
+      const days = ([0]).concat(aM.divide(1,course['progression'] ) )
       const contagiousDays = aM.getMask(days,course.contagious)
-      const totalContagiousDays = aM.sum(contagiousSteps)
-      const avgTransmision = aM.divide(aM.sum(aM.multiply(contagiousDays,contagiousSteps)),totalContagiousDays)
-      courseAvgTransmisionDays.push(avgTransmision)
-      courseContagiousRatio.push(totalContagiousDays / aM.sum(steps))
+      courseContagiousDays.push(aM.sum(contagiousDays))
     });
 
-    const courseProportions = [this.sim.moderate.value , this.sim.asymptomatic.value, this.sim.severe.value, this.sim.critical.value]
-    const transmisionPeriod = aM.sum( aM.multiply(courseAvgTransmisionDays , courseProportions) )
-
-    //
+    const courseProportions = [this.sim.asymptomatic.value, this.sim.moderate.value , this.sim.severe.value, this.sim.critical.value]
+    const contagiousDurration = aM.sum( aM.multiply(courseContagiousDurration , courseProportions) )
     const interaction = []
     this.controls.social.forEach(element =>{interaction.push(element.value)})
-    const transmisability = this.sim.R0.value / (transmisionPeriod)
+    const transmisability = this.sim.R0.value / contagiousDurration
 
     const social_spread = aM.interp1d( this.controls.days,  
       interaction.map( value => value  * transmisability )
@@ -197,7 +189,7 @@ export class DataService {
   
     this.sources = {...this.sources, simulation: simulateDisease(
       this.sim, this.diseaseCourses, social_spread, 
-      tests_available, tests_delay, tests_success, transmisionPeriod)
+      tests_available, tests_delay, tests_success, contagiousDurration)
     }
 
     this._dataSources.next(this.sources)
@@ -281,4 +273,11 @@ function yyyymmdd2date(ymd) {
 
 function dateDiff(startDate,endDate) {
   return Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
+}
+
+
+
+function rate2avgDays(rate) {
+  const r = 1-rate
+  return r / (1-r)**2
 }
