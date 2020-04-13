@@ -1,4 +1,4 @@
-import * as aM from '../arrayMath'
+import * as aM from '../tools/arrayMath'
 import { DataSet } from '../data/data-model'
 
 // interface DiseaseAttributes {
