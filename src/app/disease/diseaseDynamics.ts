@@ -1,304 +1,360 @@
-
 import * as aM from '../arrayMath'
 import { DataSet } from '../data/data-model'
 
-function makeCourse(courseDef, sim_duration) {
-    const masksLabels = ['contagious', 'symptomatic','hospital','ventalator']
-    const course = {}
-    for (const label of masksLabels) {
-        course[label] = [false]
+// interface DiseaseAttributes {
+//     contagious: boolean[],
+//     symptomatic: boolean[],
+//     hospital: boolean[],
+//     ventalator: boolean[],
+// }
+
+class Disease {
+    courses: Course[]
+    population: number
+    socialSpread: (day:number) => number
+    testsAvailable: (day:number) => number
+    testDelay: (day:number) => number
+    testSuccess: (day:number) => number
+
+    outputs: {[name:string]:number}
+
+    constructor(courses: Course[]) {
+        this.courses = courses
     }
 
-    course['progression'] = []
-    course['treated'] = []
-    course['untreated'] = []
-    for(var i = 0; i < courseDef['minDays'].length; i++){
+    createState() {
+        let state = [];
+        this.courses.forEach(course => {
+            state = [...state, ...aM.zeros(3*course.n_states)]
+        });
+        return state
+    }
+
+    setState(state) {
+        let start = 0
+        let end = 0
+        this.courses.forEach(course => {
+            end += 3*course.n_states
+            course.setState(state.slice(start,end))
+            start = end 
+        });
+    }
+
+    getState() {
+        let state=[]
+        this.courses.forEach(course=>{
+            state = [...state, ...course.getState()]
+        })
+        return state
+    }
+
+    getStateChange(day) {
+        let contagious = 0;
+        let needTest_n = 0;
+        let population = 0;
+        let newInfections = 0;
+        this.courses.forEach(course=>{
+            contagious += course.getContagious()
+            needTest_n += aM.sum( course.getNeedTest() )
+            population += course.getPopulation()
+        })
         
-        course['progression'] = course['progression'].concat(
-            aM.multiply(
-                aM.ones(courseDef['minDays'][i]), 
-                courseDef['minDays'][i] / courseDef['avgDays'][i]
-                )
-            )
-
-        course['treated'] = course['treated'].concat(
-            aM.subtract( 1,
-                aM.multiply(
-                    aM.ones(courseDef['minDays'][i]),
-                    (1-courseDef['treated'][i]) ** (1 / courseDef['avgDays'][i]) )
-                )
-            )
-
-        course['untreated'] = course['untreated'].concat(
-            aM.multiply(
-                aM.ones(courseDef['minDays'][i]),
-                Math.pow(
-                    courseDef['untreated'][i],
-                    (1 / courseDef['avgDays'][i]) 
-                    )
-                )
-            )
-
-        for (const label of masksLabels){
-            course[label] = course[label].concat( 
-                courseDef[label][i] ? 
-                    aM.trueArray( courseDef['minDays'][i] ) : 
-                    aM.falseArray( courseDef['minDays'][i] )
-                 )
+        const transmissionRate = this.socialSpread(day) * contagious / population
+        const testsAvailable = this.testsAvailable(day)
+        let testingRate
+        if (needTest_n===0) { testingRate = 1} else {
+            testingRate =  Math.min(this.testSuccess(day) * testsAvailable / (needTest_n)  ,1)
         }
-    };
 
-    for (const label of masksLabels) {
-        course[label] = course[label].concat( [false] )// dtype=bool
+        let dstate = [];
+        this.courses.forEach(course => {
+
+            // normal disease progression
+            course.progression[0] = transmissionRate
+            const dInfected = course.dailyProgression(course.infections)
+            let dPending = course.dailyProgression(course.pendingTests) 
+            let dConfirmed = course.dailyProgression(course.confirmedTests)
+
+            newInfections -= dInfected[0]
+            
+            // pending tests becoming confirmed
+            const testDelayRate = 1/this.testDelay(day)
+            let testUpdate = aM.multiply(course.pendingTests, testDelayRate) // test that become confirmed
+            const dTestUpdate = course.dailyProgression(testUpdate) // confirmed test that progressed
+            testUpdate = aM.add(testUpdate,dTestUpdate)
+            dPending = aM.subtract(dPending,testUpdate)
+            dConfirmed = aM.add(dConfirmed,testUpdate)
+
+            // new test pending
+            const needTest = course.getNeedTest()
+            let newTests = aM.multiply(needTest,testingRate)
+            const dNewTests = course.dailyProgression(newTests)
+            newTests = aM.add(newTests,dNewTests)
+            dPending = aM.add(dPending,newTests)
+
+            dstate = [...dstate,...dInfected,...dPending,...dConfirmed]
+
+        });
+
+        let suseptible = 0
+        let infections = 0
+        let infected = 0
+        let recovered = 0
+        let deceased = 0
+        let pending = 0
+        let confirmed = 0
+        let activeConfirmed = 0
+        let tested = 0
+
+        this.courses.forEach( course => {
+            suseptible += course.infections[0]
+            infections += aM.sum(course.infections.slice(1,-1))
+            infected += aM.sum(course.infections.slice(1,-2))
+            recovered += course.infections.slice(-2,-1)[0]
+            deceased += course.infections.slice(-1)[0]
+            pending += aM.sum(course.pendingTests)
+            confirmed += aM.sum(course.confirmedTests)
+            activeConfirmed += aM.sum(course.confirmedTests.slice(1,-2))
+            tested += (confirmed + pending)
+        })
+
+        this.outputs = {
+            suseptible: suseptible,
+            infections: infections,
+            infected: infected,
+            recovered: recovered,
+            deceased: deceased,
+            contagious: contagious,
+            testsAvailable: testsAvailable,
+            pending: pending,
+            confirmed: confirmed,
+            activeConfirmed: activeConfirmed,
+            tested: tested,
+            testsAvalable: testsAvailable,
+            testsNeeded: needTest_n / this.testSuccess(day) ,
+            newInfections: newInfections
+        }
+
+        return dstate
     }
 
-    const disease_steps = course['progression'].length + 2 // +2 for suseptible and resolved
-    course['state']     = aM.repeat(aM.zeros(disease_steps), sim_duration) 
-    course['pending'] = aM.repeat(aM.zeros(disease_steps), sim_duration) 
-    course['confirmed'] = aM.repeat(aM.zeros(disease_steps), sim_duration) 
+    integrand(day,state) {
+        this.setState(state)
+        return this.getStateChange(day)
+    }
+}
 
-    return course
+export class Course {
+    treatedMortality: number[]
+    untreatedMortality: number[]
+
+    contagious: boolean[]
+    symptomatic: boolean[]
+    needHospital: boolean[]
+    needVentalator: boolean[]
+
+    progression: number[]
+    n_states: number
+
+    infections: number[]
+    pendingTests: number[]
+    confirmedTests: number[]
+
+    constructor(
+        minDays: number[], avgDays: number[], 
+        treatedMortality: number[], untreatedMortality: number[], 
+        attributes) {
+        
+        this.progression        = [0]
+        this.treatedMortality   = [0] 
+        this.untreatedMortality = [0] 
+        for (const key of Object.keys(attributes)) { this[key] = [false] } // initialize disease attributes
+
+        minDays.forEach((_element,index) => {
+            // 
+            this.progression = this.progression.concat(
+                aM.multiply( aM.ones(minDays[index]), minDays[index] / avgDays[index] )
+                )
+
+            this.treatedMortality = this.treatedMortality.concat(
+                aM.subtract( 1,
+                    aM.multiply( 
+                        aM.ones(minDays[index]),
+                        (1-treatedMortality[index]) ** (1 / minDays[index]) )
+                )
+            )
+        
+            this.untreatedMortality = this.untreatedMortality.concat(
+                aM.subtract( 1,
+                    aM.multiply( 
+                        aM.ones(minDays[index]),
+                        (1-untreatedMortality[index]) ** (1 / minDays[index]) )
+                )
+            )
+
+            //
+            for (const [key, value] of Object.entries(attributes)) {
+                this[key] = this[key].concat(
+                    value[index] ? aM.trueArray( minDays[index] ) : aM.falseArray( minDays[index])
+                ) 
+            }
+
+        })
+        
+        // append stages for recovered and deceased
+        this.progression = this.progression.concat([0,0])
+        this.treatedMortality = this.treatedMortality.concat([0,0])
+        this.untreatedMortality = this.untreatedMortality.concat([0,0])
+        for (const key of Object.keys(attributes)) {
+            this[key] = this[key].concat([false,false]) 
+        }
+        this.n_states = this.progression.length
+    }
+
+    createState() {
+        return aM.zeros(3*this.progression.length)
+    }
+
+    setState(state){ 
+        this.infections     = state.slice(0*this.n_states,1*this.n_states)
+        this.pendingTests   = state.slice(1*this.n_states,2*this.n_states)
+        this.confirmedTests = state.slice(2*this.n_states,3*this.n_states)
+    }
+
+    getState() {
+        return [...this.infections, ...this.pendingTests, ...this.confirmedTests]
+    }
+
+    dailyProgression(state) {
+
+        let dState = aM.zeros(this.n_states)
+
+        // mortality
+        const mortality = this.treatedMortality
+        const deaths = aM.multiply(mortality, state)
+        dState[dState.length-1] += aM.sum(deaths)
+        
+        // baseline disease progression
+        const stateDeathsRemoved = aM.subtract(state,deaths) 
+        let progression = aM.multiply(this.progression, stateDeathsRemoved )
+        
+        // apply progression to state change
+        aM.setSlice(dState,
+            aM.add(      dState.slice(1,-1),  progression.slice(0,-2)),
+            1,-1)
+        aM.setSlice(dState,
+            aM.subtract( dState.slice(0,-2), progression.slice(0,-2) ),
+            0,-2)        
+
+        return dState
+    }
+
+    getContagious() {
+        return aM.sum(aM.getMask(this.infections,this.contagious))
+    }
+
+    getSymptomatic() {
+        return aM.sum(aM.getMask(this.infections,this.symptomatic))
+    }
+
+    getPopulation() {
+        return aM.sum(this.infections.slice(0,-1)) // everyone except the deceased
+    }
+
+    getNeedTest() {
+        let needTest = aM.subtract(aM.subtract(this.infections, this.pendingTests), this.confirmedTests)
+        aM.setMask(needTest,0,aM.not(this.symptomatic))
+        return needTest
+    }
+
+    getFirstSymptoms() {
+
+    }
+    getNeedVentalator() {
+        return aM.sum(aM.getMask(this.infections,this.needVentalator))
+    }
+    
 }
 
 export function initializeDiseseCourses(simConfig, diseaseDefinition) {
     
-    const sim_duration = simConfig.duration.value
-    const course_distribution = [
-        simConfig.asymptomatic.value, 
-        simConfig.moderate.value, 
-        simConfig.severe.value, 
-        simConfig.critical.value]
-
     // initialize population and infection
     const diseaseCourses = []
     for (const courseDef of diseaseDefinition) {
-        diseaseCourses.push( makeCourse(courseDef, sim_duration) )
+        diseaseCourses.push( new Course(courseDef.minDays,courseDef.avgDays,courseDef.treated,courseDef.untreated, courseDef.attributes) )
     }
-
-    diseaseCourses.forEach( (course,i) => {
-        course['state'][0][0] =  (simConfig.population.value - simConfig.initial_infection.value)  * course_distribution[i] 
-    })
-
-    diseaseCourses[1]['state'][0][1] = simConfig.initial_infection.value
-    
 
     return diseaseCourses
 }
 
-export function simulateDisease(simConfig, diseaseCourses, social_spread, 
-    tests_available, test_delay, tests_success, contagiousDurration) {
-        
-    // initialize outputs
-    const daily_infections = aM.zeros(simConfig.duration.value)
-    const total_susceptible = aM.zeros(simConfig.duration.value)
-    const total_resolved = aM.zeros(simConfig.duration.value)
-    const daily_infected = aM.zeros(simConfig.duration.value)
-    const total_contagious = aM.zeros(simConfig.duration.value)
-    const daily_fatalities = aM.zeros(simConfig.duration.value)
-    const total_pending = aM.zeros(simConfig.duration.value)
-    const total_confirmed = aM.zeros(simConfig.duration.value)
-    const active_confirmed = aM.zeros(simConfig.duration.value)
-    const daily_total_test_need = aM.zeros(simConfig.duration.value)
-    const daily_infected_test_need = aM.zeros(simConfig.duration.value)
-    const daily_test_avail = aM.zeros(simConfig.duration.value)
-    const daily_first_symptoms = aM.zeros(simConfig.duration.value)
+
+export function simulateDisease(simConfig, diseaseCourses: Course[],social_spread, 
+    tests_available, tests_delay, tests_success,) {
+
+    const disease = new Disease(diseaseCourses)
+    disease.socialSpread = social_spread
+    disease.testsAvailable = tests_available
+    disease.testSuccess = tests_success
+    disease.testDelay = tests_delay
+
+    const step = 1
+    const days = aM.range(simConfig.dayOffset.value,simConfig.dayOffset.value + simConfig.duration.value,step)
     
+    disease.setState(disease.createState())
     
-    const days = aM.range(simConfig.dayOffset.value,simConfig.dayOffset.value + simConfig.duration.value)
+    const courseProportions = [simConfig.asymptomatic.value, simConfig.moderate.value, simConfig.severe.value, simConfig.critical.value]
     
-    let test_pos_rate
-    let test_delay_rate
-    for (const i of aM.range(0,simConfig.duration.value)) {
-        const day = days[i]
-        //// Infection
-        for (const course of diseaseCourses) {
-            total_susceptible[i] += course['state'][i][0]
-            total_resolved[i] += course['state'][i].slice(-1)[0]
-            // daily_infected[i] += aM.sum(course['state'][i].slice(1,-1))
-
-            total_contagious[i] += aM.sum( aM.getMask( course['state'][i], course['contagious'] ) )
-            total_confirmed[i] += aM.sum(course['confirmed'][i])
-            total_pending[i] += aM.sum(course['pending'][i])
-            active_confirmed[i] += aM.sum( course['confirmed'][i].slice(1,-1) )
-
-            daily_infected_test_need[i] += aM.sum(aM.subtract(
-                aM.getMask( course['state'][i],course['symptomatic']),
-                aM.add(
-                    aM.getMask( course['pending'][i], course['symptomatic']),
-                    aM.getMask( course['confirmed'][i], course['symptomatic'])
-                ) ))
-                
-            }
-            daily_test_avail[i] = tests_available(day) 
-            daily_total_test_need[i] = daily_infected_test_need[i] / tests_success(day)
-
-        if (day == 50) {
-            const stop = true
-         }
-        
-        const susceptible_progression = social_spread(day) * total_contagious[i] / simConfig.population.value
-        
-        //// testing
-        if (daily_infected_test_need[i] == 0) {test_pos_rate = 1} // no one needs a test, so don't divide by zero
-        else {
-            test_pos_rate = aM.minimum(daily_test_avail[i] * tests_success(day)  / daily_infected_test_need[i],1)
-        } 
-
-        if (day<days.slice(-1)[0]) {
-            for (const course of diseaseCourses) {
+    disease.courses.forEach((course,index) => {
+        course.infections[0] = (simConfig.population.value - simConfig.initial_infection.value) * courseProportions[index]
+    })
     
-                if (aM.any(course['symptomatic'])) {
-                    const need_tests = aM.subtract( course['state'][i],
-                        aM.add( course['pending'][i],  course['confirmed'][i] ))
-                    aM.setMask(need_tests,0,aM.not(course['symptomatic']))
-
-                    const delay = test_delay(day)
-                    let new_pending 
-                    let new_positives
-                    if (delay <= 0) { // no delay
-                        new_positives = aM.multiply(need_tests , test_pos_rate )
-                        new_pending = aM.zeros(new_positives.let)
-                        course['confirmed'][i] = aM.add(course['confirmed'][i],new_positives)
-
-                    } else if ( delay > 0 && delay <= 1 ) {
-                        const test_delay_ratio = delay
-                        test_delay_rate = 1
-
-                        new_positives = aM.add(
-                            aM.multiply(need_tests , test_pos_rate * (1-test_delay_ratio) ),
-                            aM.multiply(course['pending'][i] , test_delay_rate ) 
-                            )
-
-                        new_pending = aM.subtract(
-                            aM.multiply(need_tests , test_pos_rate * test_delay_ratio) ,
-                            aM.multiply(course['pending'][i] , test_delay_rate ) 
-                            )
-
-                        course['confirmed'][i] = aM.add(course['confirmed'][i],new_positives)
-                        course['pending'][i] = aM.add(course['pending'][i], new_pending)
-
-                    } else {
-                        test_delay_rate = 1 - ( 0.1 ** ( 1 / (delay - 1) ) )
-                        new_pending = aM.multiply(need_tests , test_pos_rate ) // only symptomatic
-                        new_positives = aM.multiply(course['pending'][i] , test_delay_rate ) // all
-                        course['pending'][i] = aM.add(course['pending'][i], aM.subtract(new_pending,new_positives))
-                        course['confirmed'][i] = aM.add(course['confirmed'][i],new_positives)
-                    } 
-                }
-            
-                //// fatalities 
-                const todays_fatalities = aM.multiply(course['state'][i].slice(1,-1), course['treated'])
-                aM.setSlice(course['state'][i],
-                    aM.subtract(course['state'][i].slice(1,-1), todays_fatalities)
-                    ,1,-1) 
-                course['state'][i][-1] += aM.sum(todays_fatalities)
-                daily_fatalities[i] += aM.sum(todays_fatalities)
-            
-                const confirmed_fatalities = aM.multiply(course['confirmed'][i].slice(1,-1), course['treated'])
-                aM.setSlice(course['confirmed'][i],
-                    aM.subtract(course['confirmed'][i].slice(1,-1), confirmed_fatalities)
-                    ,1,-1) 
-                course['confirmed'][i][-1] += aM.sum(confirmed_fatalities)
-
-                const pending_fatalities = aM.multiply(course['pending'][i].slice(1,-1), course['treated'])
-                aM.setSlice(course['pending'][i],
-                    aM.subtract(course['pending'][i].slice(1,-1), pending_fatalities)
-                    ,1,-1) 
-                course['pending'][i][-1] += aM.sum(pending_fatalities)   
-
-
-                //// update state
-                const todays_progression = [susceptible_progression].concat(course['progression']) 
-                const state_change = aM.multiply( course['state'][i].slice(0,-1) , todays_progression)
-                course['state'][i+1]     = [...course['state'][i]]
+    disease.courses[1].infections[1] = simConfig.initial_infection.value
     
-                aM.setSlice(course['state'][i+1],
-                    aM.add(course['state'][i+1].slice(1), state_change)
-                    ,1) 
-    
-                aM.setSlice(course['state'][i+1],
-                    aM.subtract(course['state'][i+1].slice(0,-1), state_change)
-                    ,0,-1) 
+    disease.getStateChange(days[0])
+    const outputs: {[name:string]:number[]} = {}
+    for(const key of Object.keys(disease.outputs) ){
+        outputs[key] = []
+    };
 
-                daily_infections[i] += state_change[0]
+    const state = [disease.getState()]
+    for (const i of aM.range(0,days.length)) {
+        disease.setState(state[i])
+        const stateChange = disease.getStateChange(days[i])
+        state.push( aM.add(state[i], aM.multiply(stateChange,step)))
 
-                //// update testing
-                if ( aM.any(course.symptomatic) ) {
-                    daily_first_symptoms[i] += aM.getMask([0].concat(state_change),course.symptomatic).slice(0)[0] / tests_success(day)
-                }
-                const confirmed_change = aM.multiply(course['confirmed'][i].slice(0,-1), todays_progression)
-                course['confirmed'][i+1]     = [...course['confirmed'][i]]
-                
-                aM.setSlice(course['confirmed'][i+1],
-                aM.add(course['confirmed'][i+1].slice(1), confirmed_change)
-                ,1) 
-                
-                aM.setSlice(course['confirmed'][i+1],
-                    aM.subtract(course['confirmed'][i+1].slice(0,-1), confirmed_change)
-                    ,0,-1) 
-
-
-                const pending_change = aM.multiply(course['pending'][i].slice(0,-1), todays_progression)
-                course['pending'][i+1]     = [...course['pending'][i]]
-                
-                aM.setSlice(course['pending'][i+1],
-                aM.add(course['pending'][i+1].slice(1), pending_change)
-                ,1) 
-                
-                aM.setSlice(course['pending'][i+1],
-                    aM.subtract(course['pending'][i+1].slice(0,-1), pending_change)
-                    ,0,-1) 
-
-            }
-        }
-
+        for(const [key, value] of Object.entries(disease.outputs) ){
+            outputs[key].push(value)
+        };
         
     }
 
-    const total_tests = aM.cumsum(daily_test_avail)
-    const total_test_needed = aM.cumsum(daily_first_symptoms)
-    // const total_tests_backlog = aM.cumsum(daily_first_symptoms)
-    // const total_tests_need = 
-    const daily_confirmed = ([0]).concat( aM.diff(total_confirmed) )
+    let haveBeenContagious = 0
+    disease.courses.forEach(course => {
+        if( aM.any(course.contagious) ) {
+            const initialContagiousIndex = course.contagious.findIndex(element=>element)
+            haveBeenContagious += aM.sum(course.infections.slice(initialContagiousIndex))
+        }
+        
+    });
+    const contagiousDurration = aM.sum(outputs.contagious) / haveBeenContagious
+    const real_R0 = aM.multiply( aM.divide(outputs.newInfections,outputs.contagious), contagiousDurration)
 
-    const total_infected = aM.cumsum(daily_infections)
+    const daily_test_pos = ([0]).concat(aM.diff(outputs.confirmed))
+    const measured_R0 = aM.multiply( aM.divide(daily_test_pos,outputs.activeConfirmed), contagiousDurration) // should use a measured dissease durration?
 
-    const daily_test_pos = aM.diff( ([0]).concat( total_confirmed ) )
-    const real_R0 = aM.multiply( aM.divide(daily_infections,total_contagious), contagiousDurration)
-    const measured_R0 = aM.multiply( aM.divide(daily_test_pos,active_confirmed), contagiousDurration) // should use a measured dissease durration?
-
-
-    aM.setMask(real_R0,0,aM.isNaN(real_R0))
-    aM.setMask(measured_R0,0,aM.isNaN(measured_R0))
-    const daily_test_pending =  aM.diff( ([0]).concat( total_pending ) )
+    
 
     const results : DataSet = {
         label:'Model',
         channels:{
-            diseaseCourses: {label:'',value:diseaseCourses},
-            total_susceptible: {label:'',value: total_susceptible},
-            total_resolved: {label:'',value: total_resolved},
-            total_infected: {label:'',value: total_infected},
-            daily_infected: {label:'',value: daily_infected},
-            daily_infections: {label:'',value: daily_infections},
-    
-            total_contagious: {label:'',value:total_contagious},
-            total_confirmed: {label:'',value:total_confirmed},
-            daily_confirmed: {label:'',value:daily_confirmed},
-            active_confirmed: {label:'',value:active_confirmed},
-    
-            daily_fatalities: {label:'',value: daily_fatalities},
-            total_fatalities: {label:'',value: aM.cumsum(daily_fatalities)},
-    
-            total_tests: {label:'',value: total_tests}, 
-            daily_infected_test_need: {label:'',value: daily_infected_test_need},
-            daily_total_test_need: {label:'',value: daily_total_test_need},
-            daily_test_avail: {label:'',value: daily_test_avail},
-            daily_test_pending: {label:'',value: daily_test_pending},
-            daily_test_pos: {label:'',value: aM.diff( ([0]).concat( total_confirmed ) )},
-            total_test_pending: {label:'',value: total_pending},
-            daily_untested: {label:'',value: aM.subtract(daily_infected_test_need,aM.add(daily_test_pos, daily_test_pending))},
-            total_test_needed: {label:'',value: total_test_needed},
+            
+            total_susceptible: {label:'',value: outputs.suseptible},
+            total_infected: {label:'',value: outputs.infections},
+            total_confirmed: {label:'',value:outputs.confirmed},
+            total_fatalities: {label:'',value: outputs.deceased},
+            total_tests: {label:'',value: outputs.tested}, 
+            daily_test_avail: {label:'',value: outputs.testsAvailable},
+            total_test_needed: {label:'',value: outputs.testsNeeded},
 
     
             real_R0: {label:'',value: real_R0},

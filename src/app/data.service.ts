@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { initializeDiseseCourses, simulateDisease } from './disease/diseaseDynamics';
-import { DiseaseCourse, covid19 } from './disease/diseaseDefinition';
+import { initializeDiseseCourses, simulateDisease, Course } from './disease/diseaseDynamics';
+import { DiseaseDefinition, covid19 } from './disease/diseaseDefinition';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 
 import * as aM from './arrayMath'
 import { HttpClient } from '@angular/common/http';
 
-// import {data} from './data/data'
 import {plotConfig} from './plots/plotConfig'
 
 import * as cases from './disease/diseaseCases'
@@ -37,7 +36,7 @@ export class DataService {
   private plot
 
 
-  private diseaseCourses: DiseaseCourse[]
+  private diseaseCourses: Course[]
   private jan1date = new Date(2020,0,1)
 
   constructor(private http: HttpClient) {
@@ -137,7 +136,7 @@ export class DataService {
   updateResults() {
     this.sim.moderate.value = 1 - this.sim.asymptomatic.value- this.sim.severe.value- this.sim.critical.value
 
-    const diseaseDefinition = covid19
+    const diseaseDefinition: DiseaseDefinition[] = covid19
 
     this.diseaseCourses = initializeDiseseCourses(
       this.sim, diseaseDefinition )
@@ -151,22 +150,30 @@ export class DataService {
     const courseContagiousDurration = []
     diseaseDefinition.forEach(course => {
       courseContagiousDurration.push( aM.sum(
-        aM.getMask(course.avgDays,course.contagious)
+        aM.getMask(course.avgDays,course.attributes.contagious)
         ) )
     });
 
-    const courseContagiousDays = []
+    const courseAvgTransmisionDays = []
+    const courseContagiousRatio = []
     this.diseaseCourses.forEach(course => {
-      const days = ([0]).concat(aM.divide(1,course['progression'] ) )
-      const contagiousDays = aM.getMask(days,course.contagious)
-      courseContagiousDays.push(aM.sum(contagiousDays))
+      const steps = aM.divide(1,course['progression'].slice(1,-2))
+      const days = aM.subtract(aM.cumsum(steps),aM.multiply(steps,0.5))
+      const contagiousSteps = aM.getMask(steps,course.contagious.slice(1,-2))
+      const contagiousDays = aM.getMask(days,course.contagious.slice(1,-2))
+      const totalContagiousDays = aM.sum(contagiousSteps)
+      const avgTransmision = aM.divide(aM.sum(aM.multiply(contagiousDays,contagiousSteps)),totalContagiousDays)
+      courseAvgTransmisionDays.push(totalContagiousDays)
+      courseContagiousRatio.push(totalContagiousDays / aM.sum(steps))
     });
 
     const courseProportions = [this.sim.asymptomatic.value, this.sim.moderate.value , this.sim.severe.value, this.sim.critical.value]
-    const contagiousDurration = aM.sum( aM.multiply(courseContagiousDurration , courseProportions) )
+    const transmisionPeriod = aM.sum( aM.multiply(courseAvgTransmisionDays , courseProportions) )
+
+    //
     const interaction = []
     this.controls.social.forEach(element =>{interaction.push(element.value)})
-    const transmisability = this.sim.R0.value / contagiousDurration
+    const transmisability = this.sim.R0.value / (transmisionPeriod)
 
     const social_spread = aM.interp1d( this.controls.days,  
       interaction.map( value => value  * transmisability )
@@ -189,7 +196,7 @@ export class DataService {
   
     this.sources = {...this.sources, simulation: simulateDisease(
       this.sim, this.diseaseCourses, social_spread, 
-      tests_available, tests_delay, tests_success, contagiousDurration)
+      tests_available, tests_delay, tests_success)
     }
 
     this._dataSources.next(this.sources)
@@ -273,11 +280,4 @@ function yyyymmdd2date(ymd) {
 
 function dateDiff(startDate,endDate) {
   return Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
-}
-
-
-
-function rate2avgDays(rate) {
-  const r = 1-rate
-  return r / (1-r)**2
 }
