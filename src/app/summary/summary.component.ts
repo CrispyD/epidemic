@@ -12,6 +12,7 @@ export class SummaryComponent implements OnInit {
   logLinearToggle="logarithmic"
 
   sources
+  sourceKeys
   config
 
   plotC
@@ -26,6 +27,7 @@ export class SummaryComponent implements OnInit {
     })
     this.dataService.dataSources.subscribe(sources => {
       this.sources = sources
+      this.sourceKeys = Object.keys(sources).sort()
     })
   }
 
