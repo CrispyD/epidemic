@@ -68,7 +68,6 @@ export class PlotComponent implements OnInit, OnChanges {
         for (const line of plotData.lines) {
           this.lineChartData.push({
             data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
-            lineTension: 0,  
             label: line['label'],
             yAxisID: 'y',
             fill: false,
@@ -121,7 +120,6 @@ export class PlotComponent implements OnInit, OnChanges {
         plotData.lines.forEach((line,index) =>{
           this.lineChartData[index] = {...this.lineChartData[index],
               data: this.zip(line.x, line.y, (x, y) => ({ x, y })),
-              lineTension: 0,  
               label: line['label'],
               yAxisID: 'y',
               fill: false,
