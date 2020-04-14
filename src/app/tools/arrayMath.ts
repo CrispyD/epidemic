@@ -13,6 +13,7 @@ export const multiply = (x,y) => maybeArray(x,y,(a,b)=>a*b)
 export const divide = (x,y) => maybeArray(x,y,(a,b)=>a/b)
 
 export const minimum = (x,y)=> maybeArray(x,y, Math.min) 
+export const maximum = (x,y)=> maybeArray(x,y, Math.max) 
 
 
 export const not = (arr) => arr.map((element) => !element)

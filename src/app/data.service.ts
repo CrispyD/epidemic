@@ -138,8 +138,7 @@ export class DataService {
 
     const diseaseDefinition: DiseaseDefinition[] = covid19
 
-    this.diseaseCourses = initializeDiseseCourses(
-      this.sim, diseaseDefinition )
+    this.diseaseCourses = initializeDiseseCourses( diseaseDefinition )
       
     //
     const coursediseaseDuration = []
