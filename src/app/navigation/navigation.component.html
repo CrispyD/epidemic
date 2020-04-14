@@ -2,9 +2,17 @@
 <mat-toolbar color="primary" class="toolbar">
 
     <mat-toolbar-row class="toolbar">
-        <span [routerLink]="['']">Covid Controller</span>
-        <span class="example-spacer"></span>    
+        
+        <span [routerLink]="['']">
+            <h1>Covid Controller</h1>
+        </span>
+
+        <span class="spacer"></span> 
+
+        <mat-button [routerLink]="['about']">about</mat-button>
+
     </mat-toolbar-row>
+
 </mat-toolbar>
     
 <div class="all-content">
