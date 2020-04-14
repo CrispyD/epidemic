@@ -19,6 +19,7 @@ import { ControlsComponent } from './controls/controls.component';
 import { PlotsComponent } from './plots/plots.component';
 import { SummaryComponent } from './summary/summary.component';
 import { NumberKMBTPipe } from './number-kmbt.pipe';
+import { NavigationComponent } from './navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NumberKMBTPipe } from './number-kmbt.pipe';
     ControlsComponent,
     PlotsComponent,
     SummaryComponent,
-    NumberKMBTPipe
+    NumberKMBTPipe,
+    NavigationComponent,
   ],
   imports: [
     BrowserModule,
