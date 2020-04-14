@@ -42,3 +42,6 @@
     justify-content: center;
 }
 
+.description {
+    grid-column: span 2 / auto;
+}

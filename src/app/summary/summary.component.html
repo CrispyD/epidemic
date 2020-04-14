@@ -22,8 +22,9 @@
         <div class="switch" *ngFor="let key of objectKeys(sources)">
             <mat-slide-toggle color="primary" (change)="hideSource($event,key)" [checked]="sources[key].hidden ? false : true">{{sources[key].label}}</mat-slide-toggle>
         </div>
-
-
+        <div class="description">
+                Data provided by <a href="https://covidtracking.com/">covidtracking.com</a>
+        </div>
 
 </mat-card-content>
 
