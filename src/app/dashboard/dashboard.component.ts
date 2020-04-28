@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { DataService } from '../data.service';
+import { map } from 'rxjs/operators';
+import { ConDragChartComponent } from '../controls/con-drag-chart/con-drag-chart.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +10,50 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() {}
+  @ViewChildren(ConDragChartComponent) dragCharts: ConDragChartComponent[];
+  
+  constructor(private dataService: DataService) {}
+  config
+  social
+  tests
+  ngOnInit() {
+    this.dataService.config.subscribe((config)=>{
+      this.config = config
+    })
+    this.social = this.dataService.config.pipe(
+      map(config=>config.controls.social)
+    )
+    this.tests = this.dataService.config.pipe(
+      map(config=>config.controls.tests)
+    )
+  }
 
-  ngOnInit() {}
+  updateConfig(config,label) {
+    this.config.controls[label] = config
+    this.dataService.updateConfig(this.config)
+  }
+
+  openTab(tabName) {
+    var i;
+    var x = document.getElementsByClassName("tab");
+    for (i = 0; i < x.length; i++) {
+        const element: any = x[i]
+        if (element.id === tabName) {
+            if (element.style.display === "block") {
+                element.style.display = "none"
+            } else {
+                element.style.display = "block"
+            }
+        } else {
+            element.style.display = "none"
+        }
+    };
+    if (this.dragCharts) {
+      this.dragCharts.forEach(
+      chart => {chart.onResize(tabName)}
+      );
+    }
+}
 
   identifierIndex = (index:number, item: any) => index;
 }

@@ -110,12 +110,12 @@ export class DataService {
   resetPlot() {
     this.plot = JSON.parse(JSON.stringify(plotConfig))
   }
+
   setCase(caseName) {
     this.sim =      JSON.parse(JSON.stringify(cases[caseName].simConfig))
     this.controls = JSON.parse(JSON.stringify(cases[caseName].controls))
     this.updateResults()
   }
-
 
   updateConfig(newConfig) {
     this.controls = {...newConfig.controls}
@@ -170,34 +170,22 @@ export class DataService {
     const transmisionPeriod = aM.sum( aM.multiply(courseAvgTransmisionDays , courseProportions) )
 
     //
-    const interaction = []
-    this.controls.social.forEach(element =>{interaction.push(element.value)})
+    
+    const interaction = interpFromControl(this.controls.social,aM.interp1d)
     const transmisability = this.sim.R0.value / (transmisionPeriod)
+    const social_spread = (day) => transmisability * interaction(day)
 
-    const social_spread = aM.interp1d( this.controls.days,  
-      interaction.map( value => value  * transmisability )
-    )
+    const tests_available = interpFromControl(this.controls.tests,(x,y)=>aM.powInterp1d(x,y,10))
+    const tests_delay = interpFromControl(this.controls.testDelay,aM.interp1d)
+    const tests_success = (day) => 0.15
 
-    const testNumber = []
-    const testDelay = []
-    const testSuccess = []
-
-    this.controls.tests.forEach(element =>{
-      testNumber.push(Math.pow(10,element.value))
-      testSuccess.push(0.15)
-    })
-    this.controls.testDelay.forEach(element =>{
-      testDelay.push(element.value)
-    })
-    const tests_available = aM.logInterp1d( this.controls.days, testNumber )
-    const tests_delay = aM.interp1d( this.controls.days, testDelay )
-    const tests_success = aM.interp1d( this.controls.days, testSuccess )
   
     this.sources = {...this.sources, simulation: simulateDisease(
       this.sim, this.diseaseCourses, social_spread, 
       tests_available, tests_delay, tests_success)
     }
 
+    this.sendConfig()
     this._dataSources.next(this.sources)
     this._config.next({
       sim: this.sim,
@@ -206,6 +194,16 @@ export class DataService {
     })
 
   }
+}
+
+function interpFromControl(control, interpFun) {
+  const days = []
+  const values = []
+  control.values.forEach(value =>{
+    days.push(value.x.value)
+    values.push(value.y.value)
+  })
+  return interpFun( days, values )
 }
 
 function total2daily(days,total) {

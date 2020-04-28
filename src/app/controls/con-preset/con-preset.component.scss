@@ -1,0 +1,9 @@
+.description {
+    font-size: 10pt;
+}
+
+.case-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}

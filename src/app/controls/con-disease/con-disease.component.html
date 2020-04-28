@@ -1,0 +1,93 @@
+<p class="description">
+    <strong>Disease and Population Parameters</strong> <br> Severe and critical cases have 5% and 50% death rates, respectively.
+</p>
+
+<div *ngIf="config" class="slider-box">
+    <div class="slider" matRipple [matRippleRadius]="50">
+        <p class="label">R0</p>
+        <mat-icon class="icon-button" (click)=incrementItem(config.sim.R0)>keyboard_arrow_up</mat-icon>
+
+        <p class="value">{{config.sim.R0.value}}</p>
+
+        <mat-icon class="icon-button" (click)=decrementItem(config.sim.R0)>keyboard_arrow_down</mat-icon>
+
+    </div>
+
+    <div class="slider" matRipple [matRippleRadius]="50">
+        <p class="label">First Infection</p>
+        <mat-icon class="icon-button" (click)=incrementItem(this.config.sim.dayOffset)>keyboard_arrow_up</mat-icon>
+
+        <p class="value">
+            {{ dateFromDay(this.config.sim.dayOffset.value) | date : 'MMM d' }}
+        </p>
+
+        <mat-icon class="icon-button" (click)=decrementItem(this.config.sim.dayOffset)>keyboard_arrow_down</mat-icon>
+
+    </div>
+
+    <div class="slider" matRipple [matRippleRadius]="50">
+        <p class="label">Pop.</p>
+        <mat-icon class="icon-button" (click)=incrementItem(config.sim.population)>keyboard_arrow_up
+        </mat-icon>
+
+        <p class="value">
+            {{postFix_kMBT(config.sim.population.value)}}
+        </p>
+
+        <mat-icon class="icon-button" (click)=decrementItem(config.sim.population)>keyboard_arrow_down
+        </mat-icon>
+
+    </div>
+
+    <div class="slider" matRipple [matRippleRadius]="50">
+        <p class="label">Asymp- tomatic</p>
+        <mat-icon class="icon-button" (click)=incrementItem(config.sim.asymptomatic)>keyboard_arrow_up
+        </mat-icon>
+
+        <p class="value">
+            {{config.sim.asymptomatic.value | percent:'0.0-2'}}
+        </p>
+
+        <mat-icon class="icon-button" (click)=decrementItem(config.sim.asymptomatic)>keyboard_arrow_down
+        </mat-icon>
+    </div>
+
+    <div class="slider" matRipple [matRippleRadius]="50">
+        <p class="label">Moderate</p>
+        <mat-icon class="icon-button" (click)=incrementItem(config.sim.moderate)>keyboard_arrow_up
+        </mat-icon>
+
+        <p class="value">
+            {{config.sim.moderate.value | percent:'0.0-2'}}
+        </p>
+
+        <mat-icon class="icon-button" (click)=decrementItem(config.sim.moderate)>keyboard_arrow_down
+        </mat-icon>
+
+    </div>
+    <div class="slider" matRipple [matRippleRadius]="50">
+        <p class="label">Severe</p>
+        <mat-icon class="icon-button" (click)=incrementItem(config.sim.severe)>keyboard_arrow_up
+        </mat-icon>
+
+        <p class="value">
+            {{config.sim.severe.value | percent:'0.0-2'}}
+        </p>
+
+        <mat-icon class="icon-button" (click)=decrementItem(config.sim.severe)>keyboard_arrow_down
+        </mat-icon>
+
+    </div>
+    <div class="slider" matRipple [matRippleRadius]="50">
+        <p class="label">Critical</p>
+        <mat-icon class="icon-button" (click)=incrementItem(config.sim.critical)>keyboard_arrow_up
+        </mat-icon>
+
+        <p class="value">
+            {{config.sim.critical.value | percent:'0.0-2'}}
+        </p>
+
+        <mat-icon class="icon-button" (click)=decrementItem(config.sim.critical)>keyboard_arrow_down
+        </mat-icon>
+    </div>
+</div>

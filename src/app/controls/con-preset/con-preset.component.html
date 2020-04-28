@@ -1,0 +1,8 @@
+<p class="description">
+    <strong>Social Mitigation - Preset Cases</strong> <br> The Large, Moderate, and Small Effect cases roughly corespond to the <a href="https://covid19.healthdata.org/projections">projections made by IHME</a> (as of April 1, 2020). The No Action case
+    assumes no social mitigations.
+</p>
+
+<div class="case-box">
+    <button mat-flat-button class="case" *ngFor="let case of objectKeys(cases); let i=index;" (click)="setCase(case)" color="primary">{{cases[case].label}}</button>
+</div>

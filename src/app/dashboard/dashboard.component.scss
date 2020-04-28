@@ -1,62 +1,120 @@
-
-
-@media screen and (max-width: 801px) {
-.content-grid {
-  margin: auto;
-  
-  max-width: 95%;
-  display: grid;
-  flex-wrap: wrap;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); //repeat(auto-fit, minmax(180px, 1fr));
-  grid-auto-rows: 56px;
+:host {
+    font-size: 16px;
+    font-family: 'Open Sans';
+    --text-primary: #b6b6b6;
+    --text-secondary: #ececec;
+    --bg-primary: #23232e;
+    --bg-secondary: #141418;
+    --transition-speed: 600ms;
+    --tab-label-size: 4rem;
+    --tab-content-height: 13rem;
+    /* Media query needs to be updated when either of these are changed */
+    --plot-width: 20rem;
+    --tab-content-width: 25rem;
 }
 
-  ////////////////////////
-  .card-summary {
-    grid-row: span 2 / auto;
-    grid-column: span 1 / auto;
-  }
-
-  ////////////////////////
-  .card-plot {
-    grid-row: span 6 / auto;
-    grid-column: span 1 / auto;
-  }
-
-  ////////////////////////
-  .card-control {
-    grid-row: span 4 / auto;
-    grid-column: span 1 / auto;
-  }
-}
-
-@media screen and (min-width: 800px) {
-  .content-grid {
-    margin: auto;
-    
-    max-width: 95%;
+.nav-tabs {
+    position: fixed;
+    background-color: var(--bg-primary);
+    bottom: 0;
+    width: 100vw;
+    height: calc(var(--tab-content-height) + var(--tab-label-size));
     display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: var(--tab-content-height) var(--tab-label-size);
+}
+
+main {
+    margin-left: 0rem;
+    margin-bottom: calc(var(--tab-content-height) + var(--tab-label-size));
+    padding: 1rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    height: var(--tab-label-size);
+    color: var(--text-primary);
+    text-decoration: none;
+    filter: grayscale(100%) opacity(0.7);
+    transition: var(--transition-speed);
+    background: var(--bg-secondary);
+    justify-content: center;
+    grid-row-end: -1;
+}
+
+.nav-link:hover {
+    filter: grayscale(0%) opacity(1);
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+}
+
+.link-text {
+    display: none;
+    margin-left: 1rem;
+}
+
+.nav-link svg {
+    width: 2rem;
+    min-width: 2rem;
+    margin: 0 1rem;
+    color: #df49a6;
+}
+
+.plot-area {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--plot-width), 1fr));
     gap: 1rem;
-    grid-template-columns: repeat(2, minmax(240px, 1fr)); //repeat(auto-fit, minmax(180px, 1fr));
-    grid-auto-rows: 75px;
-  }
-  
-  ////////////////////////
-  .card-summary {
-    grid-row: span 2 / auto;
-    grid-column: span 1 / auto;
-  }
+}
 
-  ////////////////////////
-  .card-plot {
-    grid-row: span 5 / auto;
-    grid-column: span 1 / auto;
-  }
+.plot {
+    height: 15rem;
+    background-color: var(--bg-secondary);
+}
 
-  ////////////////////////
-  .card-control {
-    grid-row: span 3 / auto;
-    grid-column: span 1 / auto;
-  }
+.tab {
+    grid-column: 1/6;
+    grid-row: 1/2;
+    color: var(--text-secondary);
+    display: none;
+}
+
+.control {
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-primary);
+    overflow: auto
+}
+
+
+/* Large screens */
+
+@media only screen and (min-width: 52rem) {
+    main {
+        margin-left: var(--tab-content-width);
+    }
+    .nav-tabs {
+        // top: 0;
+        width: var(--tab-content-width);
+        // height: 100vh;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .nav-link {
+        grid-column: 1/5;
+        align-items: center;
+        grid-row-end: auto;
+        justify-content: start;
+    }
+    .tab {
+        height: var(--tab-content-height);
+        grid-row: span 3/auto;
+        display: block;
+    }
+    .link-text {
+        display: inline;
+        flex: 1;
+    }
 }
