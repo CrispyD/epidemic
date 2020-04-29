@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
     this.dataService.updateConfig(this.config)
   }
 
+  
   openTab(tabName) {
     var i;
     var x = document.getElementsByClassName("tab");

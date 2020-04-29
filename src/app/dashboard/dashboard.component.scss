@@ -13,21 +13,26 @@
     --tab-content-width: 25rem;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .nav-tabs {
-    position: fixed;
-    background-color: var(--bg-primary);
-    bottom: 0;
-    width: 100vw;
-    height: calc(var(--tab-content-height) + var(--tab-label-size));
+    flex: 0 0 calc(var(--tab-content-height) + var(--tab-label-size));
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: var(--tab-content-height) var(--tab-label-size);
+    background-color: var(--bg-primary);
 }
 
-main {
-    margin-left: 0rem;
-    margin-bottom: calc(var(--tab-content-height) + var(--tab-label-size));
-    padding: 1rem;
+.plots {
+    overflow: auto;
+}
+
+button {
+    all: unset;
 }
 
 .nav-link {
@@ -51,7 +56,6 @@ main {
 
 .link-text {
     display: none;
-    margin-left: 1rem;
 }
 
 .nav-link svg {
@@ -59,18 +63,6 @@ main {
     min-width: 2rem;
     margin: 0 1rem;
     color: #df49a6;
-}
-
-.plot-area {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--plot-width), 1fr));
-    gap: 1rem;
-}
-
-.plot {
-    height: 15rem;
-    background-color: var(--bg-secondary);
 }
 
 .tab {
@@ -84,21 +76,18 @@ main {
     height: 100%;
     width: 100%;
     background-color: var(--bg-primary);
-    overflow: auto
 }
 
 
 /* Large screens */
 
 @media only screen and (min-width: 52rem) {
-    main {
-        margin-left: var(--tab-content-width);
+    .container {
+        flex-direction: row-reverse;
     }
     .nav-tabs {
-        // top: 0;
         width: var(--tab-content-width);
-        // height: 100vh;
-        height: 100%;
+        flex: 0 0 auto;
         display: flex;
         flex-direction: column;
     }
@@ -111,10 +100,10 @@ main {
     .tab {
         height: var(--tab-content-height);
         grid-row: span 3/auto;
-        display: block;
     }
     .link-text {
         display: inline;
+        margin-left: 1rem;
         flex: 1;
     }
 }
