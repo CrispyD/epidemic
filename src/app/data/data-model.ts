@@ -7,5 +7,5 @@ export interface DataSet {
 
 interface Channel {
     label:string
-    value: number[] | Date[] | string[]
+    value: any[]
 }

@@ -2,10 +2,11 @@
 
 body {
     font-family: 'Open Sans';
-    color: black;
-    background-color: white;
+    color: #b6b6b6; //#b6b6b6
+    background-color: #23232e; //#23232e
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -28,12 +29,18 @@ https://github.com/swimlane/ngx-charts */
     /**
        * Backgrounds
        */
-    $color-bg-darkest: #13141b;
-    $color-bg-darker: #1b1e27;
+    // $color-bg-darkest: #13141b;
+    // $color-bg-darker: #1b1e27;
     $color-bg-dark: #232837;
     $color-bg-med: #2f3646;
     $color-bg-light: #455066;
     $color-bg-lighter: #5b6882;
+    $color-bg-darkest: inherit;
+    $color-bg-darker: inherit;
+    // $color-bg-dark: inherit;
+    // $color-bg-med: inherit;
+    // $color-bg-light: inherit;
+    // $color-bg-lighter: inherit;
     /**
        * Text
        */

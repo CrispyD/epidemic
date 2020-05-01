@@ -33,7 +33,7 @@ export class DataService {
   private sources : DataSources = {}
   private controls
   private sim
-  private plot
+  private plot = {daily:true,logScale:true,plots:[]}
 
 
   private diseaseCourses: Course[]
@@ -47,28 +47,15 @@ export class DataService {
     this.resetPlot()
     this.setCase('optimistic')
     this.loadData()
-    this.toggleDailyTotal()
   }
 
   toggleDailyTotal() {
-    for (const plot of this.plot) {
-      if ( plot['fun'] && plot['fun'].label==='daily') {
-        plot['fun'] = {
-          label:'total',
-          y:undefined
-        }
-      } else if(plot['fun']) {
-        plot['fun'] = {
-          label:'daily',
-          y:total2daily
-        }
-      }
-    }
+    this.plot.daily = !this.plot.daily
     this.sendConfig()
   }
 
   hideLine(lineHide) {
-    for (const plot of this.plot) {
+    for (const plot of this.plot.plots) {
       const linehideMe = plot.lines.find(line=>{
         return line.y === lineHide.y
       })
@@ -88,19 +75,13 @@ export class DataService {
     })
   }
 
-  toggleLinLog() {
-    for (const plot of this.plot) {
-      if (plot.scale && plot.scale.type=='logarithmic') {
-        plot.scale.type='linear'
-      } else if (plot.scale) {
-        plot.scale.type='logarithmic'
-      }
-    }
+  toggleLinLog() {    
+    this.plot.logScale = !this.plot.logScale
     this.sendConfig()
   }
 
   hideSource(sourceKey,hidden) {
-    for (const plot of this.plot) {
+    for (const plot of this.plot.plots) {
       const sourceHideMe = plot.sources.find(source=>source.name === sourceKey)
       sourceHideMe.hidden = hidden
     }
@@ -108,7 +89,7 @@ export class DataService {
   }
 
   resetPlot() {
-    this.plot = JSON.parse(JSON.stringify(plotConfig))
+    this.plot.plots = JSON.parse(JSON.stringify(plotConfig))
   }
 
   setCase(caseName) {
@@ -122,9 +103,10 @@ export class DataService {
     this.sim = {...newConfig.sim}
     this.updateResults()
   }
+
   loadData() {
-    this.http.get('https://covidtracking.com/api/us/daily').toPromise().then(
-      (response) => {
+    this.http.get('https://covidtracking.com/api/v1/us/daily.json').toPromise().then(
+        (response) => {
         this.sources['data'] = parseCovidTrackingAPI(response,this.jan1date)
         this._dataSources.next(this.sources)
       })
@@ -180,18 +162,18 @@ export class DataService {
     const tests_success = (day) => 0.15
 
   
-    this.sources = {...this.sources, simulation: simulateDisease(
+    this.sources = {...this.sources, model: simulateDisease(
       this.sim, this.diseaseCourses, social_spread, 
       tests_available, tests_delay, tests_success)
     }
 
     this.sendConfig()
     this._dataSources.next(this.sources)
-    this._config.next({
-      sim: this.sim,
-      controls: this.controls,
-      plot:this.plot
-    })
+    // this._config.next({
+    //   sim: this.sim,
+    //   controls: this.controls,
+    //   plot:this.plot
+    // })
 
   }
 }

@@ -1,7 +1,14 @@
 :host {
-    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--plot-width), 1fr));
+    gap: 1rem;
+}
+
+.containChart {
+    flex-grow: 1;
+    height: 150px;
+    width: 100%;
+    display: grid;
     gap: 1rem;
 }
 

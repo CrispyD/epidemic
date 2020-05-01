@@ -1,5 +1,5 @@
 
-const duration = 365;
+const duration = 200;
 
 function displayPow10(x) {return Math.pow(10,x)}
 const af = displayPow10

@@ -18,12 +18,12 @@ import { ChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { PlotsComponent } from './plots/plots.component';
-import { SummaryComponent } from './summary/summary.component';
 import { NumberKMBTPipe } from './number-kmbt.pipe';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ConPresetComponent } from './controls/con-preset/con-preset.component';
 import { ConDragChartComponent } from './controls/con-drag-chart/con-drag-chart.component';
 import { ConDiseaseComponent } from './controls/con-disease/con-disease.component';
+import { ConPlotComponent } from './controls/con-plot/con-plot.component';
 
 
 @NgModule({
@@ -32,12 +32,12 @@ import { ConDiseaseComponent } from './controls/con-disease/con-disease.componen
     DashboardComponent,
     PlotComponent,
     PlotsComponent,
-    SummaryComponent,
     NumberKMBTPipe,
     NavigationComponent,
     ConPresetComponent,
     ConDragChartComponent,
     ConDiseaseComponent,
+    ConPlotComponent,
   ],
   imports: [
     BrowserModule,

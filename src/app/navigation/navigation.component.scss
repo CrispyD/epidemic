@@ -1,5 +1,6 @@
 :host {
     height: 100vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -10,13 +11,4 @@
     width: 100%;
     max-width: 1920px;
     margin: auto;
-}
-
-.example-spacer {
-    flex: 1 1 auto;
-}
-
-.toolbar {
-    width: 100%;
-    margin: 0;
 }

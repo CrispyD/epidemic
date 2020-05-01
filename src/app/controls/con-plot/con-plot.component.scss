@@ -1,0 +1,28 @@
+.toggle-button-group {
+    display: flex;
+    width: 15rem;
+    height: 4rem;
+}
+
+.toggle-button {
+    all: unset;
+    flex: 1 1 5rem;
+}
+
+.toggle-button-first {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+.toggle-button-last {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.toggle-button:hover {
+    color: #000;
+}
+
+.toggle-button[data-active=true] {
+    background-color: blue;
+}

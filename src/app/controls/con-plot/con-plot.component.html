@@ -1,0 +1,21 @@
+<div class='toggle-box'>
+    <div class='toggle-button-group' (click)="toggleTotalDaily()">
+        <button class='toggle-button toggle-button-first' [attr.data-active]="config.plot.daily">Daily</button>
+        <button class='toggle-button toggle-button-last' [attr.data-active]="!config.plot.daily">Total</button>
+    </div>
+
+    <div class='toggle-button-group' (click)="toggleLinLog()">
+        <button class='toggle-button toggle-button-first' [attr.data-active]="config.plot.logScale">Log</button>
+        <button class='toggle-button toggle-button-last' [attr.data-active]="!config.plot.logScale">Linear</button>
+    </div>
+
+</div>
+
+
+<div class="switch" *ngFor="let key of sourceKeys">
+    <mat-slide-toggle color="primary" (change)="hideSource($event,key)" [checked]="sources[key].hidden ? false : true">{{sources[key].label}}</mat-slide-toggle>
+</div>
+
+<div class="description">
+    Data provided by <a href="https://covidtracking.com/" target="_blank" rel="noopener noreferrer">covidtracking.com</a>
+</div>

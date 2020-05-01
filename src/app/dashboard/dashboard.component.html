@@ -1,7 +1,15 @@
 <div class="container">
+    <div class="plots">
 
-    <app-plots class="plots"></app-plots>
+        <div class="toolbar">
 
+            <div class="title">
+                <h2>Covid Controller</h2>
+            </div>
+        </div>
+
+        <app-plots></app-plots>
+    </div>
 
     <div class="nav-tabs">
         <button class="nav-link" (click)="openTab('tab1')" id="label1">
@@ -50,9 +58,7 @@
         </button>
 
         <div id="tab5" class="tab">
-            <div class="control">
-                <h2>Tab 5</h2>
-            </div>
+            <app-con-plot></app-con-plot>
         </div>
 
     </div>
