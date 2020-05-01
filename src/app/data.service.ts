@@ -123,7 +123,7 @@ export class DataService {
     this.updateResults()
   }
   loadData() {
-    this.http.get('https://covidtracking.com/api/us/daily').toPromise().then(
+    this.http.get('https://covidtracking.com/api/v1/us/daily.json').toPromise().then(
       (response) => {
         this.sources['data'] = parseCovidTrackingAPI(response,this.jan1date)
         this._dataSources.next(this.sources)
