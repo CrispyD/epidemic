@@ -4,6 +4,19 @@
 
 .case-box {
     display: grid;
+    justify-items: stretch;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 0.5rem;
+}
+
+button {
+    all: unset;
+    box-sizing: border-box;
+    height: 2rem;
+    font-size: small;
+    text-align: center;
+    border-style: solid;
+    border-color: #df49a6;
+    border-radius: 1rem;
+    color: #b6b6b6;
 }

@@ -1,11 +1,11 @@
 <div class="plot-box" *ngFor="let plot of plotData; let i = index; trackBy:identifierIndex">
-    <h2>{{plot.label}}</h2>
-    <p class="description" [innerHTML]="plot.description"></p>
+    <h3>{{plot.label}}</h3>
+    <!-- <p class="description" [innerHTML]="plot.description"></p> -->
 
     <div class="stats-box">
-        <div *ngFor="let line of config.plot.plots[i].lines" class='stat ripple' (click)="hideLine(line)" [ngStyle]="{'background-color': line.color[0]}">
+        <div *ngFor="let line of config.plot.plots[i].lines" class='stat ripple' (click)="hideLine(line)" [ngStyle]="{'border-color': line.color[0]}">
             <div>{{line.label | titlecase}}</div>
-            <div>{{sources?.model?.channels[line.y].value.slice(-1)[0] | numberKMBT: 2}}</div>
+            <div>{{sources?.model?.channels[line.y].value.slice(-1)[0] | numberKMBT: 1}}</div>
         </div>
     </div>
 

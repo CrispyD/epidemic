@@ -24,8 +24,8 @@ export class ConPlotComponent implements OnInit {
     })
   }
   
-  hideSource(event,sourceKey) {
-    this.dataService.hideSource(sourceKey,!event.checked)
+  toggleSource(sourceKey) {
+    this.dataService.toggleSource(sourceKey)
   }
 
   toggleLinLog(){

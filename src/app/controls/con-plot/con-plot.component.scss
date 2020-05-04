@@ -1,12 +1,54 @@
+:host {
+    margin: 0.5rem;
+}
+
+.container {
+    // height: 80%;
+    display: grid;
+    grid-auto-flow: column;
+    justify-items: center;
+    align-items: center;
+    grid-template-rows: repeat(3, minmax(min-content, max-content));
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    color: #b6b6b6;
+    font-size: small;
+}
+
+.title {
+    grid-row-start: 1; // grid-column: 1/2;
+    font-size: medium;
+    // justify-self: left;
+}
+
+.description {
+    text-align: center;
+    margin: 1rem;
+    color: #b6b6b6;
+    font-size: small;
+}
+
+.description a {
+    text-decoration: none;
+    color: #ececec;
+    font-weight: bold;
+}
+
+.title h4 {
+    margin: 0;
+}
+
 .toggle-button-group {
     display: flex;
-    width: 15rem;
-    height: 4rem;
+    width: 8rem;
+    height: 2rem;
 }
 
 .toggle-button {
     all: unset;
     flex: 1 1 5rem;
+    text-align: center;
+    border-style: solid;
 }
 
 .toggle-button-first {
@@ -19,10 +61,91 @@
     border-bottom-right-radius: 1rem;
 }
 
-.toggle-button:hover {
-    color: #000;
+.toggle-button[data-active=false]:hover {
+    background-color: #df49a6;
+    filter: grayscale(50%) opacity(0.7);
 }
 
 .toggle-button[data-active=true] {
-    background-color: blue;
+    border-color: #df49a6;
+}
+
+.toggle-button[data-active=false] {
+    border-color: #b6b6b6;
+}
+
+//
+.switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.switch-label {
+    width: 4rem;
+    flex: 0 0 auto;
+}
+
+.switch {
+    width: 5rem;
+    flex: 0 0 auto;
+    position: relative;
+    display: inline-block;
+    width: 2.5rem;
+    height: 1.5rem;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #b6b6b6;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.2rem;
+    width: 1.2rem;
+    left: .2rem;
+    bottom: .15rem;
+    background-color: #23232e;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #df49a6;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #df49a6;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(0.9rem);
+    -ms-transform: translateX(0.9rem);
+    transform: translateX(0.9rem);
+}
+
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 1rem;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }

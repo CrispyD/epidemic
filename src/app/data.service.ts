@@ -80,10 +80,10 @@ export class DataService {
     this.sendConfig()
   }
 
-  hideSource(sourceKey,hidden) {
+  toggleSource(sourceKey) {
     for (const plot of this.plot.plots) {
       const sourceHideMe = plot.sources.find(source=>source.name === sourceKey)
-      sourceHideMe.hidden = hidden
+      sourceHideMe.hidden = !sourceHideMe.hidden
     }
     this.sendConfig()
   }

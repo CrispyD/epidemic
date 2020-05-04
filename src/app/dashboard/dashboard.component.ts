@@ -40,10 +40,10 @@ export class DashboardComponent implements OnInit {
     for (i = 0; i < x.length; i++) {
         const element: any = x[i]
         if (element.id === tabName) {
-            if (element.style.display === "block") {
+            if (element.style.display === "flex") {
                 element.style.display = "none"
             } else {
-                element.style.display = "block"
+                element.style.display = "flex"
             }
         } else {
             element.style.display = "none"

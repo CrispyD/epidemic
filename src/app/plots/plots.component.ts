@@ -91,17 +91,21 @@ export class PlotsComponent implements OnInit {
 
         if (this.config.plot.logScale && plot.logScale) {
           this.plotData[pCount].ylim[0] = Math.log10(
-            Math.max(this.plotData[pCount].ylim[0], 1)
+            Math.max(this.plotData[pCount].ylim[0], 10)
           );
           this.plotData[pCount].ylim[1] = Math.log10(
             this.plotData[pCount].ylim[1]
           );
           this.plotData[pCount].formatData = (x) =>
-            postFix_kMBT(Math.pow(10, x));
+            postFix_kMBT(Math.pow(10, x),1);
         } else {
           this.plotData[pCount].ylim[0] = undefined;
           this.plotData[pCount].ylim[1] = undefined;
-          this.plotData[pCount].formatData = (x) => postFix_kMBT(x);
+          if (plot.logScale) {
+            this.plotData[pCount].formatData = (x) => postFix_kMBT(x,1);
+          } else {
+            this.plotData[pCount].formatData = (x) => postFix_kMBT(x,10);
+          }
         }
 
         for (const source of plot.sources) {
@@ -205,7 +209,7 @@ function total2daily(days, total) {
   return aM.divide(daily, day);
 }
 
-function postFix_kMBT(x) {
+function postFix_kMBT(x,scale) {
   let sign = "";
   let value;
   if (x < 0) {
@@ -213,22 +217,22 @@ function postFix_kMBT(x) {
     x = -x;
   }
   if (x >= 0 && x < 1) {
-    value = Math.round(x) + " ";
+    value = Math.round(x*scale)/scale + " ";
   }
   if (x >= 1 && x < 1e3) {
-    value = Math.round(x) + " ";
+    value = Math.round(x*scale)/scale + " ";
   }
   if (x >= 1e3 && x < 1e6) {
-    value = Math.round(x / 1e2) / 10 + "k";
+    value = Math.round(x*scale / 1e3) / scale + "k";
   }
   if (x >= 1e6 && x < 1e9) {
-    value = Math.round(x / 1e5) / 10 + "M";
+    value = Math.round(x*scale / 1e6) / scale + "M";
   }
   if (x >= 1e9 && x < 1e12) {
-    value = Math.round(x / 1e8) / 10 + "B";
+    value = Math.round(x*scale / 1e9) / scale + "B";
   }
   if (x >= 1e12 && x < 1e15) {
-    value = Math.round(x / 1e11) / 10 + "T";
+    value = Math.round(x*scale / 1e12) / scale + "T";
   }
   return sign + value;
 }

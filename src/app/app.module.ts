@@ -6,9 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Material
-import { MaterialModule } from './material.module';
-
 // Components
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PlotComponent } from './tools/plot/plot.component';
@@ -44,7 +41,6 @@ import { ConPlotComponent } from './controls/con-plot/con-plot.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    MaterialModule,
     ChartsModule,
     NgxChartsModule,
   ],
