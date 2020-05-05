@@ -1,8 +1,6 @@
 
-const duration = 200;
+const duration = 275;
 
-function displayPow10(x) {return Math.pow(10,x)}
-const af = displayPow10
 export const optimistic = {
   label: "Large Effect",
   simConfig: {
@@ -25,7 +23,7 @@ export const optimistic = {
         { x: { value: 152 }, y: { value: 0.1 } },
         { x: { value: 182 }, y: { value: 0.25 } },
       ],
-      x: { min: 0, max: 365, step: 1 },
+      x: { min: 0, max: 365, step: 5 },
       y: { min: 0, max: 1, step: 0.05 },
     },
 
@@ -36,7 +34,7 @@ export const optimistic = {
         { x: { value: 70 }, y: { value: 4.0 } },
         { x: { value: 88 }, y: { value: 5.3 } },
       ],
-      x: { min: 0, max: 365, step: 1 },
+      x: { min: 0, max: 365, step: 5 },
       y: { min: 0, max: 6, step: 0.1, axisFormat: 'pow10' },
     },
   
@@ -45,7 +43,7 @@ export const optimistic = {
         { x: { value: 70 }, y: { value: 5 } },
         { x: { value: 152 }, y: { value: 5 } },
       ],
-      x: { min: 0, max: 200, step: 1 },
+      x: { min: 0, max: 200, step: 5 },
       y: { min: 0, max: 10, step: 0.5  },
     },
   }
@@ -72,7 +70,7 @@ export const moderate = {
         { x: { value: 152 }, y: { value: 0.15 } },
         { x: { value: 182 }, y: { value: 0.25 } },
       ],
-      x: { min: 0, max: 365, step: 1 },
+      x: { min: 0, max: 365, step: 5 },
       y: { min: 0, max: 1, step: 0.05 },
     },
 
@@ -83,7 +81,7 @@ export const moderate = {
         { x: { value: 70 }, y: { value: 4.0 } },
         { x: { value: 88 }, y: { value: 5.3 } },
       ],
-      x: { min: 0, max: 365, step: 1 },
+      x: { min: 0, max: 365, step: 5 },
       y: { min: 0, max: 6, step: 0.1, axisFormat: 'pow10' },
     },
   
@@ -92,7 +90,7 @@ export const moderate = {
         { x: { value: 70 }, y: { value: 5 } },
         { x: { value: 152 }, y: { value: 5 } },
       ],
-      x: { min: 0, max: 200, step: 1 },
+      x: { min: 0, max: 200, step: 5 },
       y: { min: 0, max: 10, step: 0.5  },
     },
   }
@@ -120,7 +118,7 @@ export const pessimistic = {
         { x: { value: 152 }, y: { value: 0.2 } },
         { x: { value: 182 }, y: { value: 0.25 } },
       ],
-      x: { min: 0.0, max: 365, step: 1 },
+      x: { min: 0.0, max: 365, step: 5 },
       y: { min: 0.0, max: 1, step: 0.05 },
     },
 
@@ -131,7 +129,7 @@ export const pessimistic = {
         { x: { value: 70 }, y: { value: 4.0 } },
         { x: { value: 88 }, y: { value: 5.3 } },
       ],
-      x: { min: 0, max: 365, step: 1 },
+      x: { min: 0, max: 365, step: 5 },
       y: { min: 0, max: 6, step: 0.1, axisFormat: 'pow10' },
     },
   
@@ -140,7 +138,7 @@ export const pessimistic = {
         { x: { value: 70 }, y: { value: 5 } },
         { x: { value: 152 }, y: { value: 5 } },
       ],
-      x: { min: 0, max: 200, step: 1 },
+      x: { min: 0, max: 200, step: 5 },
       y: { min: 0, max: 10, step: 0.5  },
     },
   }
@@ -168,7 +166,7 @@ export const noAction = {
         { x: { value: 152 }, y: { value: 1.0 } },
         { x: { value: 182 }, y: { value: 1.0 } },
       ],
-      x: { min: 0.0, max: 365, step: 1 },
+      x: { min: 0.0, max: 365, step: 5 },
       y: { min: 0.0, max: 1, step: 0.05 },
     },
 
@@ -179,7 +177,7 @@ export const noAction = {
         { x: { value: 70 }, y: { value: 4.0 } },
         { x: { value: 88 }, y: { value: 5.3 } },
       ],
-      x: { min: 0, max: 365, step: 1 },
+      x: { min: 0, max: 365, step: 5 },
       y: { min: 0, max: 6, step: 0.1, axisFormat: 'pow10' },
     },
   
@@ -188,7 +186,7 @@ export const noAction = {
         { x: { value: 70 }, y: { value: 5 } },
         { x: { value: 152 }, y: { value: 5 } },
       ],
-      x: { min: 0, max: 200, step: 1 },
+      x: { min: 0, max: 200, step: 5 },
       y: { min: 0, max: 10, step: 0.5  },
     },
   }

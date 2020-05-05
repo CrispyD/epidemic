@@ -16,6 +16,8 @@ export class DashboardComponent implements OnInit {
   config
   social
   tests
+  activeTab ='';
+
   ngOnInit() {
     this.dataService.config.subscribe((config)=>{
       this.config = config
@@ -35,6 +37,7 @@ export class DashboardComponent implements OnInit {
 
   
   openTab(tabName) {
+    this.activeTab = tabName;
     var i;
     var x = document.getElementsByClassName("tab");
     for (i = 0; i < x.length; i++) {

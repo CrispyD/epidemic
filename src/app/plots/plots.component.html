@@ -10,8 +10,8 @@
     </div>
 
     <div class="containChart dark">
-        <ngx-charts-line-chart [yScaleMin]="plot.ylim[0]" [yScaleMax]="plot.ylim[1]" [animations]="animations" [view]="" [scheme]="plot.colors" [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis
-            " [xAxisLabel]="xAxisLabel " [yAxisLabel]="yAxisLabel " [timeline]="timeline " [tooltipDisabled]="tooltipDisabled " [results]="plot.lines " [yAxisTickFormatting]="plot.formatData ">
+        <ngx-charts-line-chart [xScaleMin]="xMin" [xScaleMax]="xMax" [yScaleMin]="plot.ylim[0]" [yScaleMax]="plot.ylim[1]" [animations]="animations" [view]="" [scheme]="plot.colors" [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+            [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel " [yAxisLabel]="yAxisLabel " [timeline]="timeline " [tooltipDisabled]="tooltipDisabled " [results]="plot.lines " [yAxisTickFormatting]="plot.formatData ">
             <ng-template #tooltipTemplate let-model="model">
                 <span class="tooltip-label">{{model.name | date}}</span>
                 <span class="tooltip-val">{{plot.formatData(model.value)}}</span>

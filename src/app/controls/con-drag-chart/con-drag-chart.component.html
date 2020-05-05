@@ -1,6 +1,6 @@
 <div class="containChart dark">
-    <ngx-charts-line-chart [draggable]="draggable" [activateDrag]="activateDrag" [uid]="uid" [xScaleMin]="xMin" [xScaleMax]="xMax" [yScaleMin]="yMin-yStep" [yScaleMax]="yMax+yStep" [animations]="animations" [view]="" [scheme]="colorScheme" [legend]="legend"
-        [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [tooltipDisabled]="tooltipDisabled" [results]="data" (resultsChange)="outputControl($event)"
+    <app-con-chart [draggable]="draggable" [activeControl]="activeControl" [activateDrag]="activateDrag" [uid]="uid" [xScaleMin]="xMin" [xScaleMax]="xMax" [yScaleMin]="yMin-yStep" [yScaleMax]="yMax+yStep" [animations]="animations" [view]="" [scheme]="colorScheme"
+        [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [tooltipDisabled]="tooltipDisabled" [results]="data" (resultsChange)="outputControl($event)"
         [yAxisTickFormatting]="yAxisTickFormatting">
-    </ngx-charts-line-chart>
+    </app-con-chart>
 </div>

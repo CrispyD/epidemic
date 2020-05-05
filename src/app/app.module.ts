@@ -12,7 +12,7 @@ import { PlotComponent } from './tools/plot/plot.component';
 
 // Chart imports
 import { ChartsModule } from 'ng2-charts';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts/';
 
 import { PlotsComponent } from './plots/plots.component';
 import { NumberKMBTPipe } from './number-kmbt.pipe';
@@ -22,6 +22,9 @@ import { ConDragChartComponent } from './controls/con-drag-chart/con-drag-chart.
 import { ConDiseaseComponent } from './controls/con-disease/con-disease.component';
 import { ConPlotComponent } from './controls/con-plot/con-plot.component';
 
+import { ConChartComponent } from './controls/con-chart/con-chart.component';
+import { CircleSeriesComponent } from './controls/con-chart/circle-series.component';
+import { CircleComponent } from './controls/con-chart/circle.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { ConPlotComponent } from './controls/con-plot/con-plot.component';
     ConDragChartComponent,
     ConDiseaseComponent,
     ConPlotComponent,
+    ConChartComponent,
+    CircleSeriesComponent,
+    CircleComponent,
   ],
   imports: [
     BrowserModule,

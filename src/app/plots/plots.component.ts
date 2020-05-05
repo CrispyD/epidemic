@@ -51,15 +51,18 @@ export class PlotsComponent implements OnInit {
       this.updatePlotData();
     });
 
-    this.xMin = 0;
-    this.xMax = 360;
+    // set plot window from 1 jan 2020, to the end of the sim
+    // let xmin = this.sources['model'].channels.days.value[0];
+    let xmax = this.sources['model'].channels.days.value.slice(-1)[0]
+   
+    this.xMin = jan1;
+    this.xMax = new Date((new Date(jan1)).setDate(jan1.getDate() + xmax));
 
     this.yMin = 0;
     this.yMax = 350e6;
   }
 
   hideLine(line) {
-    console.log(line);
     this.dataService.hideLine(line);
   }
 
@@ -97,12 +100,12 @@ export class PlotsComponent implements OnInit {
             this.plotData[pCount].ylim[1]
           );
           this.plotData[pCount].formatData = (x) =>
-            postFix_kMBT(Math.pow(10, x),1);
+            postFix_kMBT(Math.pow(10, x),10);
         } else {
           this.plotData[pCount].ylim[0] = undefined;
           this.plotData[pCount].ylim[1] = undefined;
           if (plot.logScale) {
-            this.plotData[pCount].formatData = (x) => postFix_kMBT(x,1);
+            this.plotData[pCount].formatData = (x) => postFix_kMBT(x,10);
           } else {
             this.plotData[pCount].formatData = (x) => postFix_kMBT(x,10);
           }
@@ -163,7 +166,6 @@ export class PlotsComponent implements OnInit {
         pCount++;
       }
     }
-    console.log(this.plotData);
   }
 
   getSeriesToolTipText(tooltipItem: any, format): string {
@@ -220,7 +222,7 @@ function postFix_kMBT(x,scale) {
     value = Math.round(x*scale)/scale + " ";
   }
   if (x >= 1 && x < 1e3) {
-    value = Math.round(x*scale)/scale + " ";
+    value = Math.round(x) + " ";
   }
   if (x >= 1e3 && x < 1e6) {
     value = Math.round(x*scale / 1e3) / scale + "k";

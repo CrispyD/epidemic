@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, HostListener, ViewChild } from '@angular/core';
-import { LineChartComponent } from '@swimlane/ngx-charts';
+import { ConChartComponent } from '../../controls/con-chart/con-chart.component';
 
 const jan1 = new Date('1/1/2020')
 
@@ -14,6 +14,7 @@ export class ConDragChartComponent implements OnInit, OnChanges {
   
   @Input() uid;
 
+  @Input() activeControl
   @Input() control;
   @Output() controlChange = new EventEmitter<string>();
 
@@ -48,7 +49,7 @@ export class ConDragChartComponent implements OnInit, OnChanges {
   lastOutput;
   timeout;
 
-  @ViewChild(LineChartComponent) lineChart:LineChartComponent;
+  @ViewChild(ConChartComponent) lineChart:ConChartComponent;
 
   constructor() { }
 
@@ -73,7 +74,7 @@ export class ConDragChartComponent implements OnInit, OnChanges {
       x:{
         min:new Date((new Date(jan1)).setDate(jan1.getDate()+ this.control.x.min)),
         max:new Date((new Date(jan1)).setDate(jan1.getDate()+ this.control.x.max)),
-        step: this.control.x.step * 24*60*60*1000
+        step: this.control.x.step
        },
       y:{...this.control.y }
     }
