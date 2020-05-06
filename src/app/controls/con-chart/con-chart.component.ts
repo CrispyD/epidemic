@@ -283,9 +283,9 @@ export class ConChartComponent extends LineChartComponent  {
     // What data point needs to be moved
     const seriesName = target.getAttribute('data-series');
     const dataIndex = parseInt(target.getAttribute('data-index'));
-    console.log('drag')
-
-    const currentSeries = this.results.find(series => series.name === seriesName); // which series
+    
+    // const currentSeries = this.results.find(series => series.name === seriesName); // which series
+    const currentSeries = this.results[0]; // which series
     const currentData = currentSeries.series[dataIndex]; //which point
     currentData.active = true;
     currentSeries.series.forEach(element=>{
@@ -296,61 +296,145 @@ export class ConChartComponent extends LineChartComponent  {
         element.value = y; // update
       }
     })
-    
-    currentSeries.series.slice(dataIndex,-1).forEach((element,index,array) => {
-      if (array[index+1]) {
-        if ((array[index+1].name - array[index].name)<(24*60*60*1000)) {
-          if (array[index].name<this.draggable.x.max) {
-            array[index+1].name = incrementDay(array[index].name)
-          } else {
-            array[index].name = decrementDay(array[index+1].name)
-          }
-        }
-      }
-    });
-
-    currentSeries.series.slice(1,dataIndex+1).reverse().forEach((element,index,array) => {
-      if (array[index+1]) {
-        if ((array[index].name - array[index+1].name)<(24*60*60*1000)) {
-          if (array[index].name>this.draggable.x.min) {
-            array[index+1].name = decrementDay(array[index].name)
-          } else {
-            array[index].name = incrementDay(array[index+1].name)
-          }
-        }
-      }
-    })
-  
-    currentSeries.series.slice(1,-1).forEach((element,index,array) => {
-      if (array[index+1]) {
-        if ((array[index+1].name - array[index].name)<(24*60*60*1000)) {
-          if (array[index].name<this.draggable.x.max) {
-            array[index+1].name = incrementDay(array[index].name)
-          } else {
-            array[index].name = decrementDay(array[index+1].name)
-          }
-        }
-      }
-    });
-
-    currentSeries.series.slice(1,-1).reverse().forEach((element,index,array) => {
-      if (array[index+1]) {
-        if ((array[index].name - array[index+1].name)<(24*60*60*1000)) {
-          if (array[index].name>this.draggable.x.min) {
-            array[index+1].name = decrementDay(array[index].name)
-          } else {
-            array[index].name = incrementDay(array[index+1].name)
-          }
-        }
-      }
-    })
-    
-    
-    // update
     this.timeoutUpdate()
   }
 
-  timeoutUpdate(){ // not behaving quite as intended 
+  findMinMax(){
+    let Ymax = this.draggable.y.min;
+    let Ymin = this.draggable.y.max;
+    let Xmax = this.draggable.x.min;
+    let Xmin = this.draggable.x.max;
+    let YmaxInd = 0;
+    let YminInd = 0;
+    let XmaxInd = 0;
+    let XminInd = 0;
+    
+    const currentSeries = this.results[0]
+    currentSeries.series.forEach((element,index)=>{
+      if (element.active) {
+
+        const x = element.name; 
+        const y = element.value; // update
+        if (x>Xmax) {Xmax = x;XmaxInd=index}
+        if (x<Xmin) {Xmin = x;XminInd=index}
+        if (y>Ymax) {Ymax = y;YmaxInd=index}
+        if (y<Ymin) {Ymin = y;YminInd=index}
+      }
+    })
+    return {
+      x:{
+        min:{
+          value:Xmin,
+          ind:XminInd
+        },
+        max:{
+          value:Xmax,
+          ind:XmaxInd
+        },
+      },
+      y:{
+        min:{
+          value:Ymin,
+          ind:YminInd
+        },
+        max:{
+          value:Ymax,
+          ind:YmaxInd
+        },
+      }
+    }
+  }
+  
+    fixMinMax(){
+      const currentSeries = this.results[0]
+      const minMax = this.findMinMax()
+
+      if (minMax.x.min.value<this.draggable.x.min) {
+        const x_error = this.draggable.x.min - minMax.x.min.value;
+        currentSeries.series.forEach((element)=>{
+          if (element.active) { 
+              element.name = new Date(element.name.getTime() + x_error) 
+          }
+        })
+      }
+  
+      if (minMax.x.max.value>this.draggable.x.max) {
+        const x_error = minMax.x.max.value - this.draggable.x.max ;
+        currentSeries.series.forEach((element)=>{
+          if (element.active) { element.name = new Date(element.name.getTime() - x_error) }
+        })
+      }
+      
+      if (minMax.y.min.value<this.draggable.y.min) {
+        const y_error = this.draggable.y.min - minMax.y.min.value;
+        currentSeries.series.forEach((element)=>{
+          if (element.active) { element.value += y_error }
+        })
+      }
+  
+      if (minMax.y.max.value>this.draggable.y.max) {
+        const y_error = minMax.y.max.value - this.draggable.y.max;
+        currentSeries.series.forEach((element)=>{
+          if (element.active) { element.value -= y_error }
+        })
+      }
+    }
+
+    fixOverlap(){
+      const currentSeries = this.results[0]
+      const minMax = this.findMinMax()
+      currentSeries.series.slice(minMax.x.max.ind,-1).forEach((element,index,array) => {
+        if (array[index+1]) {
+          if ((array[index+1].name - array[index].name)<(24*60*60*1000*this.draggable.x.step)) {
+            if (array[index].name<this.draggable.x.max) {
+              array[index+1].name = incrementDay(array[index].name,this.draggable.x.step)
+            } else {
+              array[index].name = decrementDay(array[index+1].name,this.draggable.x.step)
+            }
+          }
+        }
+      });
+
+      currentSeries.series.slice(1,minMax.x.min.ind+1).reverse().forEach((element,index,array) => {
+        if (array[index+1]) {
+          if ((array[index].name - array[index+1].name)<(24*60*60*1000*this.draggable.x.step)) {
+            if (array[index].name>this.draggable.x.min) {
+              array[index+1].name = decrementDay(array[index].name,this.draggable.x.step)
+            } else {
+              array[index].name = incrementDay(array[index+1].name,this.draggable.x.step)
+            }
+          }
+        }
+      })
+  
+      currentSeries.series.slice(1,-1).forEach((element,index,array) => {
+        if (array[index+1]) {
+          if ((array[index+1].name - array[index].name)<(24*60*60*1000*this.draggable.x.step)) {
+            if (array[index].name<this.draggable.x.max) {
+              array[index+1].name = incrementDay(array[index].name,this.draggable.x.step)
+            } else {
+              array[index].name = decrementDay(array[index+1].name,this.draggable.x.step)
+            }
+          }
+        }
+      });
+
+      currentSeries.series.slice(1,-1).reverse().forEach((element,index,array) => {
+        if (array[index+1]) {
+          if ((array[index].name - array[index+1].name)<(24*60*60*1000*this.draggable.x.step)) {
+            if (array[index].name>this.draggable.x.min) {
+              array[index+1].name = decrementDay(array[index].name,this.draggable.x.step)
+            } else {
+              array[index].name = incrementDay(array[index+1].name,this.draggable.x.step)
+            }
+          }
+        }
+      })
+  }
+
+  timeoutUpdate(){ // not behaving quite as intended    
+    this.fixMinMax()
+    this.fixOverlap() 
     const now = new Date().getTime();
     clearTimeout(this.updateTimeout);
     if (now - this.lastUpdate > 20) {
