@@ -65,6 +65,11 @@ export class ConDragChartComponent implements OnInit, OnChanges {
     this.lineChart.update()
   }
 
+  up(){ this.lineChart.activeIncrementValues() }
+  down(){ this.lineChart.activeDecrementValues() }
+  left(){ this.lineChart.activeDecrementDays() }
+  right(){ this.lineChart.activeIncrementDays() }
+
   mapData() {
     if (this.control.y.axisFormat) {
       this.yAxisTickFormatting = (x)=>postFix_kMBT(Math.pow(10,x))

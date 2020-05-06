@@ -1,6 +1,19 @@
-.containChart {
+.container {
     height: 100%;
     width: 100%;
+    display: flex;
+}
+
+.containChart {
+    flex: 1 0 auto;
+    // height: 100%;
+    width: 5rem;
     display: grid;
     gap: 1rem;
+}
+
+.dpad {
+    flex: 0 1 auto;
+    width: 5rem;
+    align-self: center;
 }

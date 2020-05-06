@@ -25,6 +25,7 @@ import { ConPlotComponent } from './controls/con-plot/con-plot.component';
 import { ConChartComponent } from './controls/con-chart/con-chart.component';
 import { CircleSeriesComponent } from './controls/con-chart/circle-series.component';
 import { CircleComponent } from './controls/con-chart/circle.component';
+import { ConDpadComponent } from './controls/con-dpad/con-dpad.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { CircleComponent } from './controls/con-chart/circle.component';
     ConChartComponent,
     CircleSeriesComponent,
     CircleComponent,
+    ConDpadComponent,
   ],
   imports: [
     BrowserModule,

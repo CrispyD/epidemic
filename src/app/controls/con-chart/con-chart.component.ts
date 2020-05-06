@@ -193,49 +193,44 @@ export class ConChartComponent extends LineChartComponent  {
   keyEvent(event: KeyboardEvent) {
     let update=false
     if(this.activeControl){
-      if(event.keyCode == KEY_CODE.UP_ARROW){ update = this.activeIncrementValues() }
-      if(event.keyCode == KEY_CODE.DOWN_ARROW){ update = this.activeDecrementValues() }
-      if(event.keyCode == KEY_CODE.RIGHT_ARROW){ update = this.activeIncrementDays() }
-      if(event.keyCode == KEY_CODE.LEFT_ARROW){ update = this.activeDecrementDays() }
-      if(update){ this.timeoutUpdate() }
+      if(event.keyCode == KEY_CODE.UP_ARROW){ this.activeIncrementValues() }
+      if(event.keyCode == KEY_CODE.DOWN_ARROW){ this.activeDecrementValues() }
+      if(event.keyCode == KEY_CODE.RIGHT_ARROW){ this.activeIncrementDays() }
+      if(event.keyCode == KEY_CODE.LEFT_ARROW){ this.activeDecrementDays() }
     }
   }
 
   activeIncrementDays(){
-    let update = false
     this.results[0].series.forEach(element=>{
       if (element.active) { 
         element.name = incrementDay(element.name,this.draggable.x.step);
-        update=true }
+      }
     })
-    return update
+    this.timeoutUpdate()
   }
   activeDecrementDays(){
-    let update = false
     this.results[0].series.forEach(element=>{
       if (element.active) { 
         element.name = decrementDay(element.name,this.draggable.x.step);
-        update=true }
+      }
     })
-    return update
+    this.timeoutUpdate()
   }
   activeIncrementValues(){
-    let update = false
     this.results[0].series.forEach(element=>{
       if (element.active) { 
         element.value += this.draggable.y.step;
-        update=true }
+      }
     })
-    return update
+    this.timeoutUpdate()
   }
   activeDecrementValues(){
-    let update = false
     this.results[0].series.forEach(element=>{
       if (element.active) { 
         element.value -= this.draggable.y.step;
-        update=true }
+      }
     })
-    return update
+    this.timeoutUpdate()
   }
 
   initial() {
