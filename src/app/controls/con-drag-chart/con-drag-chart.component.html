@@ -1,9 +1,9 @@
 <div class="container">
 
     <div class="containChart dark">
-    <app-con-chart [draggable]="draggable" [activeControl]="activeControl" [activateDrag]="activateDrag" [uid]="uid" [xScaleMin]="xMin" [xScaleMax]="xMax" [yScaleMin]="yMin-yStep" [yScaleMax]="yMax+yStep" [animations]="animations" [view]="" [scheme]="colorScheme"
-        [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [tooltipDisabled]="tooltipDisabled" [results]="data" (resultsChange)="outputControl($event)"
-        [yAxisTickFormatting]="yAxisTickFormatting">
+        <app-con-chart [xAxisTicks]="xAxisTicks" [xAxisTickFormatting]="dateTickFormatting" [draggable]="draggable" [activeControl]="activeControl" [activateDrag]="activateDrag" [uid]="uid" [xScaleMin]="xMin" [xScaleMax]="xMax" [yScaleMin]="yMin-yStep" [yScaleMax]="yMax+yStep"
+            [animations]="animations" [view]="" [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline"
+            [tooltipDisabled]="tooltipDisabled" [results]="data" (resultsChange)="outputControl($event)" [yAxisTickFormatting]="yAxisTickFormatting">
         </app-con-chart>
     </div>
 

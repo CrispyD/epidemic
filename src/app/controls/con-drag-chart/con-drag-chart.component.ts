@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { ConChartComponent } from '../../controls/con-chart/con-chart.component';
 
 const jan1 = new Date('1/1/2020')
-
+const months = ['Jan',	'Feb',	'Mar',	'Apr',	'May',	'June',	'July',	'Aug',	'Sept',	'Oct',	'Nov',	'Dec',]
 @Component({
   selector: 'app-con-drag-chart',
   templateUrl: './con-drag-chart.component.html',
@@ -34,7 +34,7 @@ export class ConDragChartComponent implements OnInit, OnChanges {
   tooltipDisabled: boolean = false;
   activateDrag: boolean = true;
   yAxisTickFormatting: any
-
+  xAxisTicks = [new Date('1/1/2020'),new Date('3/1/2020'),new Date('5/1/2020'),new Date('7/1/2020'),new Date('9/1/2020'),new Date('11/1/2020'),new Date('1/1/2021')]
   colorScheme = {
     domain: ['#df49a6', '#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
@@ -55,6 +55,16 @@ export class ConDragChartComponent implements OnInit, OnChanges {
 
   draggable
   ngOnInit(): void {}
+
+  dateTickFormatting(val: any): String {
+    if (val instanceof Date) {
+      const month = val.getMonth()
+      if (month === 0) {
+        return val.getFullYear()+''
+      }
+      return months[month];
+    }
+  }
 
   ngOnChanges(_changes: SimpleChanges) {
     this.mapData()
