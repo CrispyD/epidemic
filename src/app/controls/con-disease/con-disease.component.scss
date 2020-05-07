@@ -15,21 +15,22 @@
 }
 
 .slider {
-    flex: 1;
+    flex: 0 1 auto;
     border-style: solid;
     border-radius: 3px;
     border-color: grey;
     border-width: 0.5px;
+    height: 8rem;
+    width: 3rem;
     min-height: 0;
-    min-width: 0;
-    max-width: 55px;
-    margin: 3px;
+    margin: 0.25rem;
     margin-bottom: 0;
     display: flex;
     flex-flow: column;
     align-content: center;
     align-items: center;
     text-align: center;
+    align-self: center;
 }
 
 .label {
@@ -59,6 +60,11 @@ button {
     width: 1rem;
     min-width: 1rem;
     margin: 0 0.5rem;
+    color: #df49a6;
+}
+
+.icon-button.incative svg {
+    color: grey;
 }
 
 .description {
