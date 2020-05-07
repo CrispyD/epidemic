@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   config
   social
   tests
-  activeTab ='';
+  activeTab ='tab1';
 
   ngOnInit() {
     this.dataService.config.subscribe((config)=>{
@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
     this.tests = this.dataService.config.pipe(
       map(config=>config.controls.tests)
     )
+    this.openTab(this.activeTab)
   }
 
   updateConfig(config,label) {
