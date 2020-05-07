@@ -6,7 +6,7 @@
     --bg-primary: #23232e;
     --bg-secondary: #141418;
     --transition-speed: 600ms;
-    --tab-label-size: 4rem;
+    --tab-label-size: 3rem;
     --tab-content-height: 13rem;
     /* Media query needs to be updated when either of these are changed */
     --plot-width: 20rem;
@@ -23,7 +23,7 @@
 .nav-tabs {
     flex: 0 0 calc(var(--tab-content-height) + var(--tab-label-size));
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: var(--tab-content-height) var(--tab-label-size);
     background-color: var(--bg-primary);
 }
@@ -85,7 +85,7 @@ button {
 }
 
 .tab {
-    grid-column: 1/7;
+    grid-column: 1/6;
     grid-row: 1/2;
     color: var(--text-secondary);
     display: none;
@@ -94,7 +94,7 @@ button {
 
 .tab-title {
     flex: 0 0 auto;
-    height: 3rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     color: var(--text-primary);
