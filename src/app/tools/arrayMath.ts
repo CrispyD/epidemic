@@ -117,6 +117,17 @@ export function interp1d(X,Y) {
     }
 }
 
+export function powInterp1d(X,Y,p) {
+    const dX = diff(X)
+    const dY = diff(Y)
+    return (x) => {
+        if (x<=X[0]) {return Math.pow(p,Y[0])} // nearest extrapolation at beginning
+        if (x>=X.slice(-1)) { return Math.pow(p,Y.slice(-1)[0]) } // nearest extrapolation at end
+        let ind = findBin(X,x)
+        return Math.pow(p,Y[ind] + dY[ind] * (x - X[ind]) / dX[ind])
+    }
+}
+
 export function logInterp1d(X,Y) {
     const log_y = Y.map( value => Math.log10(value))
     const linInterp = interp1d(X, log_y)

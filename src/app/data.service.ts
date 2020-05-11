@@ -33,7 +33,7 @@ export class DataService {
   private sources : DataSources = {}
   private controls
   private sim
-  private plot
+  private plot = {daily:true,logScale:true,plots:[]}
 
 
   private diseaseCourses: Course[]
@@ -45,30 +45,17 @@ export class DataService {
 
   initialize() {
     this.resetPlot()
-    this.setCase('optimistic')
+    this.setCase('moderate')
     this.loadData()
-    this.toggleDailyTotal()
   }
 
   toggleDailyTotal() {
-    for (const plot of this.plot) {
-      if ( plot['fun'] && plot['fun'].label==='daily') {
-        plot['fun'] = {
-          label:'total',
-          y:undefined
-        }
-      } else if(plot['fun']) {
-        plot['fun'] = {
-          label:'daily',
-          y:total2daily
-        }
-      }
-    }
+    this.plot.daily = !this.plot.daily
     this.sendConfig()
   }
 
   hideLine(lineHide) {
-    for (const plot of this.plot) {
+    for (const plot of this.plot.plots) {
       const linehideMe = plot.lines.find(line=>{
         return line.y === lineHide.y
       })
@@ -88,43 +75,38 @@ export class DataService {
     })
   }
 
-  toggleLinLog() {
-    for (const plot of this.plot) {
-      if (plot.scale && plot.scale.type=='logarithmic') {
-        plot.scale.type='linear'
-      } else if (plot.scale) {
-        plot.scale.type='logarithmic'
-      }
-    }
+  toggleLinLog() {    
+    this.plot.logScale = !this.plot.logScale
     this.sendConfig()
   }
 
-  hideSource(sourceKey,hidden) {
-    for (const plot of this.plot) {
+  toggleSource(sourceKey) {
+    for (const plot of this.plot.plots) {
       const sourceHideMe = plot.sources.find(source=>source.name === sourceKey)
-      sourceHideMe.hidden = hidden
+      sourceHideMe.hidden = !sourceHideMe.hidden
     }
     this.sendConfig()
   }
 
   resetPlot() {
-    this.plot = JSON.parse(JSON.stringify(plotConfig))
+    this.plot.plots = JSON.parse(JSON.stringify(plotConfig))
   }
+
   setCase(caseName) {
     this.sim =      JSON.parse(JSON.stringify(cases[caseName].simConfig))
     this.controls = JSON.parse(JSON.stringify(cases[caseName].controls))
     this.updateResults()
   }
 
-
   updateConfig(newConfig) {
     this.controls = {...newConfig.controls}
     this.sim = {...newConfig.sim}
     this.updateResults()
   }
+
   loadData() {
     this.http.get('https://covidtracking.com/api/v1/us/daily.json').toPromise().then(
-      (response) => {
+        (response) => {
         this.sources['data'] = parseCovidTrackingAPI(response,this.jan1date)
         this._dataSources.next(this.sources)
       })
@@ -170,42 +152,40 @@ export class DataService {
     const transmisionPeriod = aM.sum( aM.multiply(courseAvgTransmisionDays , courseProportions) )
 
     //
-    const interaction = []
-    this.controls.social.forEach(element =>{interaction.push(element.value)})
+    
+    const interaction = interpFromControl(this.controls.social,aM.interp1d)
     const transmisability = this.sim.R0.value / (transmisionPeriod)
+    const social_spread = (day) => transmisability * interaction(day)
 
-    const social_spread = aM.interp1d( this.controls.days,  
-      interaction.map( value => value  * transmisability )
-    )
+    const tests_available = interpFromControl(this.controls.tests,(x,y)=>aM.powInterp1d(x,y,10))
+    const tests_delay = interpFromControl(this.controls.testDelay,aM.interp1d)
+    const tests_success = (day) => 0.15
 
-    const testNumber = []
-    const testDelay = []
-    const testSuccess = []
-
-    this.controls.tests.forEach(element =>{
-      testNumber.push(Math.pow(10,element.value))
-      testSuccess.push(0.15)
-    })
-    this.controls.testDelay.forEach(element =>{
-      testDelay.push(element.value)
-    })
-    const tests_available = aM.logInterp1d( this.controls.days, testNumber )
-    const tests_delay = aM.interp1d( this.controls.days, testDelay )
-    const tests_success = aM.interp1d( this.controls.days, testSuccess )
   
-    this.sources = {...this.sources, simulation: simulateDisease(
+    this.sources = {...this.sources, model: simulateDisease(
       this.sim, this.diseaseCourses, social_spread, 
       tests_available, tests_delay, tests_success)
     }
 
+    this.sendConfig()
     this._dataSources.next(this.sources)
-    this._config.next({
-      sim: this.sim,
-      controls: this.controls,
-      plot:this.plot
-    })
+    // this._config.next({
+    //   sim: this.sim,
+    //   controls: this.controls,
+    //   plot:this.plot
+    // })
 
   }
+}
+
+function interpFromControl(control, interpFun) {
+  const days = []
+  const values = []
+  control.values.forEach(value =>{
+    days.push(value.x.value)
+    values.push(value.y.value)
+  })
+  return interpFun( days, values )
 }
 
 function total2daily(days,total) {

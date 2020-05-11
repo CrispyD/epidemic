@@ -1,0 +1,17 @@
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.containChart {
+    flex: 1 0 auto;
+    width: 5rem;
+    display: grid;
+}
+
+.dpad {
+    flex: 0 1 auto;
+    width: 5rem;
+    align-self: center;
+}

@@ -1,25 +1,38 @@
+<div class="plot-box" *ngFor="let plot of plotData; let i = index; trackBy:identifierIndex">
+    <div class="label">{{plot.label}}</div>
 
-
-<mat-tab-group class="tab-group" >
-    <mat-tab label="{{plot.label}}"  *ngFor="let plot of plotData; let i = index; trackBy:identifierIndex">
-
-        <p class="description" [innerHTML]="plot.description"></p>
-        
-        <div class="stats-box">
-            <div *ngFor="let line of config.plot[i].lines" 
-            class='stat' 
-            (click)="hideLine(line)" 
-            [ngStyle]="{'background-color': line.color[0]}"
-            matRipple [matRippleRadius]="50">
-                <div>{{line.label | titlecase}}</div>
-                <div>{{sources?.simulation?.channels[line.y].value.slice(-1)[0]  | numberKMBT: 2}}</div>
-            </div>
+    <div class="stats-box">
+        <div *ngFor="let line of config.plot.plots[i].lines" class='stat ripple' (click)="hideLine(line)" [ngStyle]="{'border-color': line.color[0]}">
+            <div>{{line.label | titlecase}}</div>
+            <div>{{sources?.model?.channels[line.y].value.slice(-1)[0] | numberKMBT: 1}}</div>
         </div>
+    </div>
 
-        <app-plot class="plot"
-            [plotData] = "plot"
-        ></app-plot>
+    <div class="containChart dark">
+        <ngx-charts-line-chart [xScaleMin]="xMin" [xScaleMax]="xMax" [yScaleMin]="plot.ylim[0]" [yScaleMax]="plot.ylim[1]" [animations]="animations" [view]="" [scheme]="plot.colors" [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+            [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel " [yAxisLabel]="yAxisLabel " [timeline]="timeline " [tooltipDisabled]="tooltipDisabled " [results]="plot.lines " [yAxisTickFormatting]="plot.formatData ">
+            <ng-template #tooltipTemplate let-model="model">
+                <span class="tooltip-label">{{model.name | date}}</span>
+                <span class="tooltip-val">{{plot.formatData(model.value)}}</span>
+            </ng-template>
 
-    </mat-tab>
+            <ng-template #seriesTooltipTemplate let-model="model">
+                <xhtml:div class="area-tooltip-container">
 
-</mat-tab-group>
+                    <xhtml:div class="tooltip-item">
+                        <xhtml:span class="tooltip-item-color" [style.background-color]="'#000000'"></xhtml:span>
+                        <ng-container class="tooltip-label">{{model[0].name | date}}</ng-container>
+                    </xhtml:div>
+
+                    <xhtml:div *ngFor="let tooltipItem of model; let i = index;" class="tooltip-item">
+                        <xhtml:span class="tooltip-item-color" [style.background-color]="tooltipItem.color"></xhtml:span>
+                        {{ getSeriesToolTipText(tooltipItem,plot.formatData) }}
+                    </xhtml:div>
+
+                </xhtml:div>
+            </ng-template>
+
+        </ngx-charts-line-chart>
+    </div>
+
+</div>

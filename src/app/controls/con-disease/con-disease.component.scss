@@ -1,44 +1,41 @@
-.tab-group {
-    height: 100%;
-    width: 100%;
+:host {
+    display: flex;
+    flex-direction: column;
 }
 
 .slider-box {
     width: 100%;
-    height: 140px;
+    // height: 140px;
+    flex: 1;
     margin-top: auto;
     margin-bottom: 3px;
-
     display: flex;
     justify-content: center;
     font-size: 10pt;
 }
 
 .slider {
-    flex: 1;
+    flex: 0 1 auto;
     border-style: solid;
     border-radius: 3px;
     border-color: grey;
     border-width: 0.5px;
-    
+    height: 8rem;
+    width: 3rem;
     min-height: 0;
-    min-width: 0;
-    max-width: 55px;
-    margin: 3px;
+    margin: 0.25rem;
     margin-bottom: 0;
-    
     display: flex;
     flex-flow: column;
-    
     align-content: center;
     align-items: center;
     text-align: center;
+    align-self: center;
 }
-
 
 .label {
     font-size: 8pt;
-    height: 30px ;
+    height: 30px;
     padding: 0px;
     margin: 3px;
 }
@@ -48,18 +45,33 @@
     margin: 5px;
 }
 
+button {
+    all: unset;
+}
+
 .icon-button {
-    flex: 2;
-    height: 60px;
-    width: 60px;
+    flex: 1;
+    width: 2rem;
+    min-width: 2rem;
     cursor: pointer;
+}
+
+.icon-button svg {
+    width: 1rem;
+    min-width: 1rem;
+    margin: 0 0.5rem;
+    color: #df49a6;
+}
+
+.icon-button.incative svg {
+    color: grey;
 }
 
 .description {
     font-size: 10pt;
 }
 
-.case-box { 
+.case-box {
     align-items: center;
     max-width: 95%;
     display: grid;

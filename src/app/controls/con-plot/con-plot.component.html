@@ -1,0 +1,30 @@
+<div class="container">
+
+    <div class="title">
+        <h4>Axes</h4>
+    </div>
+
+    <div class='toggle-button-group' (click)="toggleTotalDaily()">
+        <button class='toggle-button toggle-button-first' [attr.data-active]="config.plot.daily">Daily</button>
+        <button class='toggle-button toggle-button-last' [attr.data-active]="!config.plot.daily">Total</button>
+    </div>
+
+    <div class='toggle-button-group' (click)="toggleLinLog()">
+        <button class='toggle-button toggle-button-first' [attr.data-active]="config.plot.logScale">Log</button>
+        <button class='toggle-button toggle-button-last' [attr.data-active]="!config.plot.logScale">Linear</button>
+    </div>
+
+    <div class="title">
+        <h4>Sources</h4>
+    </div>
+
+    <div *ngFor="let key of sourceKeys" class="switch-container">
+        <div class="switch-label">{{sources[key].label}}</div>
+        <label class="switch">
+            <input type="checkbox" [checked]="sources[key].hidden ? false : true" (click)="toggleSource(key)">
+            <span class="slider round"></span>
+          </label>
+    </div>
+
+
+</div>
