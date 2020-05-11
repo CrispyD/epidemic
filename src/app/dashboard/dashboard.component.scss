@@ -43,6 +43,7 @@
 
 .container {
     overflow-y: auto;
+    margin-bottom: 17rem;
 }
 
 button {
@@ -198,6 +199,7 @@ a {
     .container {
         margin-left: var(--tab-content-width);
         right: 0;
+        margin-bottom: 1rem;
     }
     .nav-tabs {
         position: fixed;

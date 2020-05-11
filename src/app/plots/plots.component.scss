@@ -4,12 +4,6 @@
     gap: 1rem;
 }
 
-@media only screen and (min-width: 50rem) {
-     :host {
-        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-    }
-}
-
 .containChart {
     flex-grow: 1;
     // height: 11rem;
