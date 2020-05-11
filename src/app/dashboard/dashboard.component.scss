@@ -13,16 +13,10 @@
     --tab-content-width: 23rem;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    justify-content: space-between;
-}
-
 .nav-tabs {
-    flex: 0 0 calc(var(--tab-content-height) + var(--tab-label-size));
+    width: 100vw;
+    bottom: 0;
+    position: fixed;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: var(--tab-content-height) var(--tab-label-size);
@@ -43,12 +37,12 @@
 
 .example-spacer {
     flex: 1 1 auto;
+    height: 100%;
+    width: 100vw;
 }
 
-.plots {
+.container {
     overflow-y: auto;
-    flex: 0 1 auto;
-    position: relative;
 }
 
 button {
@@ -202,14 +196,14 @@ a {
         display: inherit;
     }
     .container {
-        flex-direction: row-reverse;
-    }
-    .plots {
-        flex: 1 1 auto;
+        margin-left: var(--tab-content-width);
+        right: 0;
     }
     .nav-tabs {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: var(--tab-content-width);
-        flex: 0 0 auto;
         display: flex;
         flex-direction: column;
     }
