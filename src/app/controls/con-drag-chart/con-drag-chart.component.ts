@@ -83,6 +83,8 @@ export class ConDragChartComponent implements OnInit, OnChanges {
   mapData() {
     if (this.control.y.axisFormat) {
       this.yAxisTickFormatting = (x)=>postFix_kMBT(Math.pow(10,x))
+    } else {
+      this.yAxisTickFormatting = (x)=>{return Math.round(x*100)+'%'}
     }
 
     this.draggable = {

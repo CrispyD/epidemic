@@ -86,22 +86,7 @@ enum  KEY_CODE {
           </svg:g>
 
           <svg:g (mouseleave)="hideCircles()">
-
-
             <svg:g *ngFor="let series of results">
-            <svg:g
-              ngx-charts-tooltip-area
-              [dims]="dims"
-              [xSet]="xSet"
-              [xScale]="xScale"
-              [yScale]="yScale"
-              [results]="results"
-              [colors]="colors"
-              [tooltipDisabled]="tooltipDisabled"
-              [tooltipTemplate]="seriesTooltipTemplate"
-              (hover)="updateHoveredVertical($event)"
-            />
-
               <svg:g
                 app-charts-circle-series
                 [xScale]="xScale"

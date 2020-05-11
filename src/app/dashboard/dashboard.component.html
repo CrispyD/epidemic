@@ -21,8 +21,8 @@
                     <strong>-Up / Down</strong> changes disease reproduction by 5%. <br>
                     <strong>-Left / Right</strong> changes the date by 5 days.
                 </p>
-                <p><strong>1.0</strong> - Normal behavior. The virus will spread quickly.</p>
-                <p><strong>0.0</strong> - Total Isolation. The virus cannot spread.</p>
+                <p><strong>100%</strong> - Normal behavior. The virus will spread quickly.</p>
+                <p><strong>0%</strong> - Total Isolation. The virus cannot spread.</p>
                 <p>The effect of Social policies and behaviors on the spread of covid19. Combined effect of physical distancing, business closures, and contact tracing, etc...</p>
             </div>
             <div *ngIf="activeTab === 'tab3'">
@@ -36,10 +36,10 @@
                 <p><strong>R - Reporduction Rate</strong> - How many new infections are directly caused by an infected person.</p>
                 <p><strong>R0 - Basic Reporduction Rate</strong> - Reproduction rate in a population with no immunity, and before any behavior changes (e.g. social distancing, contact tracing). <br></p>
                 <p><strong>First Infection</strong> - When was the first infection. This will be earlier than the first confirmed case.</p>
-                <p><strong>Asymptomatic</strong> - Percentage of the population that does not display symptoms</p>
-                <p><strong>Moderate</strong> - Percentage of the population that experiences symptoms that do not require hospitalization.</p>
-                <p><strong>Severe</strong> - Percentage of the population that requires hospitalization. Mortality rate is 10%.</p>
-                <p><strong>Critical</strong> - Percentage of the population that requires an intensive care bed or ventalation. Mortality rate is 50%.</p>
+                <p><strong>Asymptomatic</strong> - Percentage of cases that do not display symptoms</p>
+                <p><strong>Moderate</strong> - Percentage of symptomatic cases that do not require hospitalization.</p>
+                <p><strong>Severe</strong> - Percentage of cases that require hospitalization, but not ventalation. Mortality rate is 10%.</p>
+                <p><strong>Critical</strong> - Percentage of cases that require ventalation. Mortality rate is 50%.</p>
             </div>
             <div *ngIf="activeTab === 'tab5'">
                 <h2>Location</h2>
