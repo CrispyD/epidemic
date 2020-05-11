@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
         if (element.id === tabName) {
             if (element.style.display === "flex") {
                 element.style.display = "none"
+                this.activeTab = ''
             } else {
                 element.style.display = "flex"
             }

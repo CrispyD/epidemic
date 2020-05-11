@@ -45,7 +45,7 @@ export class DataService {
 
   initialize() {
     this.resetPlot()
-    this.setCase('optimistic')
+    this.setCase('moderate')
     this.loadData()
   }
 

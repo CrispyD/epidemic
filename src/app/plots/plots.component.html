@@ -1,6 +1,5 @@
 <div class="plot-box" *ngFor="let plot of plotData; let i = index; trackBy:identifierIndex">
-    <h3>{{plot.label}}</h3>
-    <!-- <p class="description" [innerHTML]="plot.description"></p> -->
+    <div class="label">{{plot.label}}</div>
 
     <div class="stats-box">
         <div *ngFor="let line of config.plot.plots[i].lines" class='stat ripple' (click)="hideLine(line)" [ngStyle]="{'border-color': line.color[0]}">

@@ -72,7 +72,7 @@ const xlim = [0, 244]
                 // 'It can also be reduced by mass vaccination of the population. ' +
                 // 'Withouth any intervention, it will drop below one naturally as the population becomes immune through infection.',
         sources:[{name:'model',hidden:false},{name:'data',hidden:false}],
-        ylim: [0, 6],
+        ylim: [0, 4],
         xlim: xlim,
         lines:[
             {label: 'Infected', x: 'days',  y: 'real_R0',   color: [yellow, yellow2],hidden:false},

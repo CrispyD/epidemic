@@ -5,12 +5,12 @@
     --text-secondary: #ececec;
     --bg-primary: #23232e;
     --bg-secondary: #141418;
+    --highlight: #df49a6;
     --transition-speed: 600ms;
     --tab-label-size: 3rem;
     --tab-content-height: 13rem;
     /* Media query needs to be updated when either of these are changed */
-    --plot-width: 20rem;
-    --tab-content-width: 25rem;
+    --tab-content-width: 23rem;
 }
 
 .container {
@@ -18,6 +18,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
+    justify-content: space-between;
 }
 
 .nav-tabs {
@@ -25,12 +26,15 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: var(--tab-content-height) var(--tab-label-size);
-    background-color: var(--bg-primary);
+    background-color: var(--bg-secondary);
 }
 
 .toolbar {
-    display: grid;
+    display: flex;
+    align-content: center;
     background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-bottom: 5px solid var(--highlight);
 }
 
 .title {
@@ -44,6 +48,7 @@
 .plots {
     overflow-y: auto;
     flex: 0 1 auto;
+    position: relative;
 }
 
 button {
@@ -78,10 +83,10 @@ button {
 }
 
 .nav-link svg {
-    width: 2rem;
-    min-width: 2rem;
+    width: 1.75rem;
+    min-width: 1.75rem;
     margin: 0 0.5rem;
-    color: #df49a6;
+    color: var(--highlight);
 }
 
 .tab {
@@ -90,6 +95,7 @@ button {
     color: var(--text-secondary);
     display: none;
     flex-direction: column;
+    background-color: var(--bg-primary);
 }
 
 .tab-title {
@@ -124,6 +130,7 @@ button {
     flex: 1 1 auto;
     height: 5rem;
     margin: 0.5rem;
+    max-width: 35rem;
 }
 
 .control {
@@ -178,15 +185,28 @@ a {
     font-weight: bold;
 }
 
+.wide {
+    display: none;
+}
+
 
 /* Large screens */
 
-@media only screen and (min-width: 52rem) {
+@media only screen and (min-width: 53rem) {
+     :host {
+        --tab-label-size: 4rem;
+    }
+    .narrow {
+        display: none;
+    }
+    .wide {
+        display: inherit;
+    }
     .container {
         flex-direction: row-reverse;
     }
     .plots {
-        flex: 1 0 auto;
+        flex: 1 1 auto;
     }
     .nav-tabs {
         width: var(--tab-content-width);
@@ -199,6 +219,7 @@ a {
         align-items: center;
         grid-row-end: auto;
         justify-content: start;
+        margin-left: 0.5rem;
     }
     .tab {
         height: var(--tab-content-height);

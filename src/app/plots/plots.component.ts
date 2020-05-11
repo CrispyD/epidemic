@@ -29,8 +29,6 @@ export class PlotsComponent implements OnInit {
 
   xMax;
   xMin;
-  yMin;
-  yMax;
   yStep;
 
   linLogButton = "Linear Axes";
@@ -58,8 +56,6 @@ export class PlotsComponent implements OnInit {
     this.xMin = jan1;
     this.xMax = new Date((new Date(jan1)).setDate(jan1.getDate() + xmax));
 
-    this.yMin = 0;
-    this.yMax = 350e6;
   }
 
   hideLine(line) {
@@ -102,10 +98,10 @@ export class PlotsComponent implements OnInit {
           this.plotData[pCount].formatData = (x) =>
             postFix_kMBT(Math.pow(10, x),10);
         } else {
-          this.plotData[pCount].ylim[0] = undefined;
-          this.plotData[pCount].ylim[1] = undefined;
           if (plot.logScale) {
             this.plotData[pCount].formatData = (x) => postFix_kMBT(x,10);
+            this.plotData[pCount].ylim[0] = undefined;
+            this.plotData[pCount].ylim[1] = undefined;
           } else {
             this.plotData[pCount].formatData = (x) => postFix_kMBT(x,10);
           }
@@ -218,10 +214,10 @@ function postFix_kMBT(x,scale) {
     sign = "-";
     x = -x;
   }
-  if (x >= 0 && x < 1) {
+  if (x >= 0 && x < 10) {
     value = Math.round(x*scale)/scale + " ";
   }
-  if (x >= 1 && x < 1e3) {
+  if (x >= 10 && x < 1e3) {
     value = Math.round(x) + " ";
   }
   if (x >= 1e3 && x < 1e6) {
