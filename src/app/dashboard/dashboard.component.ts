@@ -47,6 +47,8 @@ export class DashboardComponent implements OnInit {
             if (element.style.display === "flex") {
                 element.style.display = "none"
                 this.activeTab = ''
+                const dialog = document.getElementById('id01')
+                dialog.style.display='none'
             } else {
                 element.style.display = "flex"
             }
