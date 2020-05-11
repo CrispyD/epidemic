@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { DataService } from "../data.service";
 
-import * as aM from "../tools/arrayMath";
+import * as aM from "../arrayMath";
 
 const jan1 = new Date("1/1/2020");
 

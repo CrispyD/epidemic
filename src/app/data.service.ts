@@ -3,7 +3,7 @@ import { initializeDiseseCourses, simulateDisease, Course } from './disease/dise
 import { DiseaseDefinition, covid19 } from './disease/diseaseDefinition';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 
-import * as aM from './tools/arrayMath'
+import * as aM from './arrayMath'
 import { HttpClient } from '@angular/common/http';
 
 import {plotConfig} from './plots/plotConfig'

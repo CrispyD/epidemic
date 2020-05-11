@@ -5,7 +5,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { scaleLinear, scaleTime, scalePoint, scaleLog } from 'd3-scale';
 
 
-import interact from 'interactjs';
+import * as interact from 'interactjs/dist/interact.js';
 enum  KEY_CODE {
   UP_ARROW = 38,
   DOWN_ARROW = 40,

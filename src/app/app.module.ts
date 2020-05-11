@@ -13,13 +13,11 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAnalyticsModule, ScreenTrackingService } from '@angular/fire/analytics';
 
 
-// Components
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { PlotComponent } from './tools/plot/plot.component';
-
 // Chart imports
 import { NgxChartsModule } from '@swimlane/ngx-charts/';
 
+// Components
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { PlotsComponent } from './plots/plots.component';
 import { NumberKMBTPipe } from './number-kmbt.pipe';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -38,7 +36,6 @@ import { ConDpadComponent } from './controls/con-dpad/con-dpad.component';
   declarations: [
     AppComponent,
     DashboardComponent,
-    PlotComponent,
     PlotsComponent,
     NumberKMBTPipe,
     NavigationComponent,

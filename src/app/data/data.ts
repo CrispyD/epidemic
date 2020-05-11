@@ -1,4 +1,4 @@
-import * as aM from '../tools/arrayMath'
+import * as aM from '../arrayMath'
 import { DataSet } from './data-model'
 
 
