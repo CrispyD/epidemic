@@ -1,0 +1,5 @@
+<p>Social behavior effect</p>
+
+<div class="case-box">
+    <button class="case" *ngFor="let case of objectKeys(cases); let i=index;" (click)="setCase(case)">{{cases[case].label}}</button>
+</div>

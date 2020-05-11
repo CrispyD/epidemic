@@ -1,62 +1,252 @@
-
-
-@media screen and (max-width: 801px) {
-.content-grid {
-  margin: auto;
-  
-  max-width: 95%;
-  display: grid;
-  flex-wrap: wrap;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); //repeat(auto-fit, minmax(180px, 1fr));
-  grid-auto-rows: 56px;
+:host {
+    font-size: 16px;
+    font-family: 'Open Sans';
+    --text-primary: #b6b6b6;
+    --text-secondary: #ececec;
+    --bg-primary: #23232e;
+    --bg-secondary: #141418;
+    --highlight: #df49a6;
+    --transition-speed: 600ms;
+    --tab-label-size: 3rem;
+    --tab-content-height: 13rem;
+    /* Media query needs to be updated when either of these are changed */
+    --tab-content-width: 23rem;
 }
 
-  ////////////////////////
-  .card-summary {
-    grid-row: span 2 / auto;
-    grid-column: span 1 / auto;
-  }
-
-  ////////////////////////
-  .card-plot {
-    grid-row: span 6 / auto;
-    grid-column: span 1 / auto;
-  }
-
-  ////////////////////////
-  .card-control {
-    grid-row: span 4 / auto;
-    grid-column: span 1 / auto;
-  }
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: space-between;
 }
 
-@media screen and (min-width: 800px) {
-  .content-grid {
-    margin: auto;
-    
-    max-width: 95%;
+.nav-tabs {
+    flex: 0 0 calc(var(--tab-content-height) + var(--tab-label-size));
     display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(2, minmax(240px, 1fr)); //repeat(auto-fit, minmax(180px, 1fr));
-    grid-auto-rows: 75px;
-  }
-  
-  ////////////////////////
-  .card-summary {
-    grid-row: span 2 / auto;
-    grid-column: span 1 / auto;
-  }
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: var(--tab-content-height) var(--tab-label-size);
+    background-color: var(--bg-secondary);
+}
 
-  ////////////////////////
-  .card-plot {
-    grid-row: span 5 / auto;
-    grid-column: span 1 / auto;
-  }
+.toolbar {
+    display: flex;
+    align-content: center;
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-bottom: 5px solid var(--highlight);
+}
 
-  ////////////////////////
-  .card-control {
-    grid-row: span 3 / auto;
-    grid-column: span 1 / auto;
-  }
+.title {
+    margin-left: 1rem;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.plots {
+    overflow-y: auto;
+    flex: 0 1 auto;
+    position: relative;
+}
+
+button {
+    all: unset;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    height: var(--tab-label-size);
+    color: var(--text-primary);
+    text-decoration: none;
+    filter: grayscale(100%) opacity(0.7);
+    transition: var(--transition-speed);
+    background: var(--bg-secondary);
+    justify-content: center;
+    grid-row-end: -1;
+}
+
+.nav-link:hover {
+    filter: grayscale(0%) opacity(1);
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+}
+
+.link-text {
+    display: none;
+}
+
+.info-icon {
+    display: none;
+}
+
+.nav-link svg {
+    width: 1.75rem;
+    min-width: 1.75rem;
+    margin: 0 0.5rem;
+    color: var(--highlight);
+}
+
+.tab {
+    grid-column: 1/6;
+    grid-row: 1/2;
+    color: var(--text-secondary);
+    display: none;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+}
+
+.tab-title {
+    flex: 0 0 auto;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+    filter: grayscale(100%) opacity(0.7);
+    background: var(--bg-secondary);
+    // margin-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tab-title h3 {
+    color: var(--text-primary);
+}
+
+.tab-title svg {
+    color: var(--text-primary);
+    flex: 0 1 auto;
+    min-height: 1.5rem;
+    min-width: 1.5rem;
+    margin-right: 1rem;
+}
+
+.tab-content {
+    flex: 1 1 auto;
+    height: 5rem;
+    margin: 0.5rem;
+    max-width: 35rem;
+}
+
+.control {
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-primary);
+}
+
+.modal-container {
+    display: none;
+    position: fixed;
+    bottom: 17rem;
+    top: 1rem;
+    width: 80%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+.modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-style: solid;
+    border-color: var(--text-primary);
+    border-radius: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    overflow: scroll;
+    position: relative;
+}
+
+.close-icon {
+    color: #df49a6;
+    width: 2rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: #ececec;
+    font-weight: bold;
+}
+
+.wide {
+    display: none;
+}
+
+
+/* Large screens */
+
+@media only screen and (min-width: 53rem) {
+     :host {
+        --tab-label-size: 4rem;
+    }
+    .narrow {
+        display: none;
+    }
+    .wide {
+        display: inherit;
+    }
+    .container {
+        flex-direction: row-reverse;
+    }
+    .plots {
+        flex: 1 1 auto;
+    }
+    .nav-tabs {
+        width: var(--tab-content-width);
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .nav-link {
+        grid-column: 1/6;
+        align-items: center;
+        grid-row-end: auto;
+        justify-content: start;
+        margin-left: 0.5rem;
+    }
+    .tab {
+        height: var(--tab-content-height);
+        grid-row: span 3/auto;
+    }
+    .link-text {
+        display: inline;
+        margin-left: 1rem;
+        flex: 1;
+    }
+    .info-icon {
+        display: inline;
+    }
+    .tab-title {
+        display: none;
+    }
+    .modal-container {
+        transform: unset;
+        width: unset;
+        bottom: unset;
+        position: fixed;
+        top: 5rem;
+        left: 27rem;
+        right: 2rem;
+        max-width: 35rem;
+    }
+    .modal {
+        max-height: 80%;
+    }
 }

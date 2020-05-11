@@ -6,39 +6,51 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Material
-import { MaterialModule } from './material.module';
-
 // Components
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PlotComponent } from './tools/plot/plot.component';
 
 // Chart imports
 import { ChartsModule } from 'ng2-charts';
-import { ControlsComponent } from './controls/controls.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts/';
+
 import { PlotsComponent } from './plots/plots.component';
-import { SummaryComponent } from './summary/summary.component';
 import { NumberKMBTPipe } from './number-kmbt.pipe';
 import { NavigationComponent } from './navigation/navigation.component';
+import { ConPresetComponent } from './controls/con-preset/con-preset.component';
+import { ConDragChartComponent } from './controls/con-drag-chart/con-drag-chart.component';
+import { ConDiseaseComponent } from './controls/con-disease/con-disease.component';
+import { ConPlotComponent } from './controls/con-plot/con-plot.component';
+
+import { ConChartComponent } from './controls/con-chart/con-chart.component';
+import { CircleSeriesComponent } from './controls/con-chart/circle-series.component';
+import { CircleComponent } from './controls/con-chart/circle.component';
+import { ConDpadComponent } from './controls/con-dpad/con-dpad.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     PlotComponent,
-    ControlsComponent,
     PlotsComponent,
-    SummaryComponent,
     NumberKMBTPipe,
     NavigationComponent,
+    ConPresetComponent,
+    ConDragChartComponent,
+    ConDiseaseComponent,
+    ConPlotComponent,
+    ConChartComponent,
+    CircleSeriesComponent,
+    CircleComponent,
+    ConDpadComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     HttpClientModule,
-    MaterialModule,
-    ChartsModule
+    ChartsModule,
+    NgxChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

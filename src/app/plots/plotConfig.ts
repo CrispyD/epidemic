@@ -33,10 +33,9 @@ const xlim = [0, 244]
             label:'Cases and Deaths',
             description: 'The model is an extended <a href="https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model">Suceptible, Infected, Recovered (SIR) model</a>. ' + 
             'The number of new infections depends on; current infections, susceptible individuals, social mitigations, and the basic transmission rate R0.',
-            scale: { type: 'logarithmic', },
-            sources:[{name:'simulation',hidden:false},{name:'data',hidden:false}],
-            fun:{label:'total'},
-            swapLog: true,
+            sources:[{name:'model',hidden:false},{name:'data',hidden:false}],
+            logScale: true,
+            daily: true,
             ylim: popLim,
             xlim: xlim,
             lines:[
@@ -50,10 +49,9 @@ const xlim = [0, 244]
         title: 'Daily Testing',
         label:'Tests',
         description: 'The number of confirmed cases is limited by available tests. The Minimum Tests Needed (Min. Need) is a rough estimate that assumes ~6-7 tests are needed to confirm each symptomatic case.',
-        scale: { type: 'logarithmic', },
-        sources:[{name:'simulation',hidden:false},{name:'data',hidden:false}],
-        fun:{label:'total'},
-        swapLog: true,
+        sources:[{name:'model',hidden:false},{name:'data',hidden:false}],
+        logScale: true,
+        daily: true,
         ylim: popLim,
         xlim: xlim,
         lines:[
@@ -73,8 +71,8 @@ const xlim = [0, 244]
                 // 'It is significanly effected by our individual behavior, which is why social distancing and hand washing are so important. '+ 
                 // 'It can also be reduced by mass vaccination of the population. ' +
                 // 'Withouth any intervention, it will drop below one naturally as the population becomes immune through infection.',
-        sources:[{name:'simulation',hidden:false},{name:'data',hidden:false}],
-        ylim: [0, 6],
+        sources:[{name:'model',hidden:false},{name:'data',hidden:false}],
+        ylim: [0, 4],
         xlim: xlim,
         lines:[
             {label: 'Infected', x: 'days',  y: 'real_R0',   color: [yellow, yellow2],hidden:false},

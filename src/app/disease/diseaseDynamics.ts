@@ -388,6 +388,16 @@ export function simulateDisease(simConfig, diseaseCourses: Course[],social_sprea
         }
     }
 
+    // only keep every other point for plotting
+    for (const channel of Object.values(results.channels))  {
+        channel.value = channel['value'].reduce((acc,el,ind)=>{
+            if (ind%2 === 0){
+                acc.push(el)
+            }
+            return acc
+        },[])
+    }
+
     return results
 }
 
