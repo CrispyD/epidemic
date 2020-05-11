@@ -60,5 +60,15 @@ export class DashboardComponent implements OnInit {
     }
 }
 
+toggleDialog(event){
+  event.stopPropagation()
+  const dialog = document.getElementById('id01')
+  if((dialog.style.display === 'none') || (dialog.style.display === '')){
+    dialog.style.display='flex'
+  } else if(dialog.style.display === 'flex'){
+    dialog.style.display='none'
+  }
+}
+
   identifierIndex = (index:number, item: any) => index;
 }

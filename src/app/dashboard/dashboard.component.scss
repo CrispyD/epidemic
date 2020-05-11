@@ -132,6 +132,52 @@ button {
     background-color: var(--bg-primary);
 }
 
+.modal-container {
+    display: none;
+    position: fixed;
+    bottom: 17rem;
+    top: 1rem;
+    width: 80%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+.modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-style: solid;
+    border-color: var(--text-primary);
+    border-radius: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    overflow: scroll;
+    position: relative;
+}
+
+.close-icon {
+    color: #df49a6;
+    width: 2rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: #ececec;
+    font-weight: bold;
+}
+
 
 /* Large screens */
 
@@ -168,5 +214,18 @@ button {
     }
     .tab-title {
         display: none;
+    }
+    .modal-container {
+        transform: unset;
+        width: unset;
+        bottom: unset;
+        position: fixed;
+        top: 5rem;
+        left: 27rem;
+        right: 2rem;
+        max-width: 35rem;
+    }
+    .modal {
+        max-height: 80%;
     }
 }
