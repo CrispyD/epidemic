@@ -1,26 +1,24 @@
 .all-content {
-  width: 90%; 
-  max-width: 500px;    
-  margin: auto;
-
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
 }
 
-
 .item-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .link {
-  width: 250px;
-  margin: 10px;
-  display: flex;
-  justify-content: center;
+    width: 250px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .headding {
-  margin-top: 20px;
-  font-weight: bold;
-  font-size: 12pt;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 12pt;
 }

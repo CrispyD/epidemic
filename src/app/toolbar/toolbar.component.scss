@@ -1,0 +1,37 @@
+:host {
+    font-size: 16px;
+    font-family: 'Open Sans';
+    --text-primary: #b6b6b6;
+    --text-secondary: #ececec;
+    --bg-secondary: #141418;
+    --highlight: #df49a6;
+}
+
+.toolbar {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border-bottom: 5px solid var(--highlight);
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+.title {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.right {
+    float: right;
+}
