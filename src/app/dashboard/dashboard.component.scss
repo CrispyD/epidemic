@@ -179,10 +179,6 @@ a {
     font-weight: bold;
 }
 
-.wide {
-    display: none;
-}
-
 
 /* Large screens */
 
@@ -190,21 +186,13 @@ a {
      :host {
         --tab-label-size: 4rem;
     }
-    .narrow {
-        display: none;
-    }
-    .wide {
-        display: inherit;
-    }
     .container {
         margin-left: var(--tab-content-width);
-        right: 0;
-        margin-bottom: 1rem;
+        padding-bottom: unset;
     }
     .nav-tabs {
-        position: fixed;
-        top: 0;
-        left: 0;
+        top: 4rem;
+        bottom: 0;
         width: var(--tab-content-width);
         display: flex;
         flex-direction: column;
