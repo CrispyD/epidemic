@@ -31,6 +31,7 @@ import { ConChartComponent } from './controls/con-chart/con-chart.component';
 import { CircleSeriesComponent } from './controls/con-chart/circle-series.component';
 import { CircleComponent } from './controls/con-chart/circle.component';
 import { ConDpadComponent } from './controls/con-dpad/con-dpad.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ConDpadComponent } from './controls/con-dpad/con-dpad.component';
     CircleSeriesComponent,
     CircleComponent,
     ConDpadComponent,
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,6 @@ import { ConDpadComponent } from './controls/con-dpad/con-dpad.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
   ],
-  providers: [ScreenTrackingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
