@@ -58,6 +58,16 @@ export class PlotsComponent implements OnInit {
 
   }
 
+  toggleDialog(event,plotIndex){
+    event.stopPropagation()
+    const dialog = document.getElementById('m'+plotIndex)
+    if((dialog.style.display === 'none') || (dialog.style.display === '')){
+      dialog.style.display='flex'
+    } else if(dialog.style.display === 'flex'){
+      dialog.style.display='none'
+    }
+  }
+
   hideLine(line) {
     this.dataService.hideLine(line);
   }

@@ -31,8 +31,15 @@ const xlim = [0, 244]
         {
             title: 'Total Cases and Fatalities',
             label:'Cases and Deaths',
-            description: 'The model is an extended <a href="https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model">Suceptible, Infected, Recovered (SIR) model</a>. ' + 
-            'The number of new infections depends on; current infections, susceptible individuals, social mitigations, and the basic transmission rate R0.',
+            description: 
+            '<h3>Lines</h3>'+
+            '<p><strong>Susceptible</strong> - Individuals that can be infected</p>'+
+            '<p><strong>Infected</strong> - Number of infections</p>'+
+            '<p><strong>Confirmed</strong> - Number of infected that have tested positive</p>' +
+            '<p><strong>Deaths</strong> - Number of deaths</p>' +
+            '<h3>Insights</h3>'+
+            '<p>The model is an extended <a href="https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model">Suceptible, Infected, Recovered (SIR) model</a>. ' + 
+            'The number of new infections depends on; current infections, susceptible individuals, social behavior, and the basic transmission number R0.</p>',
             sources:[{name:'model',hidden:false},{name:'data',hidden:false}],
             logScale: true,
             daily: true,
@@ -48,7 +55,14 @@ const xlim = [0, 244]
     {
         title: 'Daily Testing',
         label:'Tests',
-        description: 'The number of confirmed cases is limited by available tests. The Minimum Tests Needed (Min. Need) is a rough estimate that assumes ~6-7 tests are needed to confirm each symptomatic case.',
+        description:
+        '<h3>Lines</h3>'+
+        '<p><strong>Tests</strong> - The number of tests available</p>'+
+        '<p><strong>Confirmed</strong> - Number of infected that have tested positive. The number of confirmed cases is limited by available tests.</p>' + 
+        '<p><strong>Min. Need</strong> - An estimate of minimum tests required to confirm all symptomatic cases. Assumes ~6-7 tests are needed to confirm each symptomatic case.</p>' + 
+        '<h3>Insights</h3>'+
+        '<p>Trends in confimed cases can be misleading. If there are too few tests, and testing is ramped up, confirmed cases can increase even when true infections are decreasing.</p>' + 
+        '<p>Unfortunately, hospitalization and death rates appear to be the most reliable data, and they lag behind the true infection rate by several weeks.<p/>',
         sources:[{name:'model',hidden:false},{name:'data',hidden:false}],
         logScale: true,
         daily: true,
@@ -64,9 +78,14 @@ const xlim = [0, 244]
     },
     {
         title: 'R0 - Reproduction Number',
-        label:'R - Transmission',
-        description: 'R is the number of infections resulting from a single infection. If it is below one, the number of cases will reduce and the epidemic will end. ' + 
-        'A direct calculation from confimed cases is misleading because of testing limitations.',
+        label:'R - Reproduction Number',
+        description: 
+        '<h3>Lines</h3>'+
+        '<p><strong>R - True</strong> - The true reproduction number. Cannot be directly measured in the real world.</p>'+
+        '<p><strong>R - Confirmed</strong> - The calculated reproduction number from confirmed cases. It is misleading because of testing limitations.</p>'+
+        '<h3>Insights</h3>'+
+        '<p>R is the number of infections resulting from a single infection. If it is below one, the number of cases will reduce and the epidemic will end.</p>' + 
+        '<p>R can be reduced through social behavior, like physical distancing and contact tracing. It will also reduce as the population becomes immune, either through infection or vaccination.</p>',
         // 'The "Infected" value is the actual replication in the model. The "Confirmed" value is calculated from modeled daily test simulation',// +
                 // 'It is significanly effected by our individual behavior, which is why social distancing and hand washing are so important. '+ 
                 // 'It can also be reduced by mass vaccination of the population. ' +
@@ -75,8 +94,8 @@ const xlim = [0, 244]
         ylim: [0, 4],
         xlim: xlim,
         lines:[
-            {label: 'Infected', x: 'days',  y: 'real_R0',   color: [yellow, yellow2],hidden:false},
-            {label: 'Confirmed', x: 'days',  y: 'measured_R0', color:  [blue,blue2],hidden:false},
+            {label: 'R - true', x: 'days',  y: 'real_R0',   color: [yellow, yellow2],hidden:false},
+            {label: 'R - confirmed', x: 'days',  y: 'measured_R0', color:  [blue,blue2],hidden:false},
         ],
     },
   ]
