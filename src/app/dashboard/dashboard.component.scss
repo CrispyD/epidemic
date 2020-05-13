@@ -23,24 +23,6 @@
     background-color: var(--bg-secondary);
 }
 
-.toolbar {
-    display: flex;
-    align-content: center;
-    background-color: var(--bg-secondary);
-    color: var(--text-secondary);
-    border-bottom: 5px solid var(--highlight);
-}
-
-.title {
-    margin-left: 1rem;
-}
-
-.example-spacer {
-    flex: 1 1 auto;
-    height: 100%;
-    width: 100vw;
-}
-
 .container {
     overflow-y: auto;
     padding-bottom: 17rem;
@@ -106,7 +88,8 @@ button {
     margin-bottom: 0;
     padding-left: 1rem;
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .tab-title h3 {
@@ -118,6 +101,7 @@ button {
     flex: 0 1 auto;
     min-height: 1.5rem;
     min-width: 1.5rem;
+    margin-left: 1rem;
     margin-right: 1rem;
 }
 
@@ -161,8 +145,9 @@ button {
     border-radius: 1rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    overflow: scroll;
     position: relative;
+    overflow-y: scroll;
+    overscroll-behavior: contain;
 }
 
 .close-icon {
@@ -201,7 +186,7 @@ a {
         grid-column: 1/6;
         align-items: center;
         grid-row-end: auto;
-        justify-content: start;
+        justify-content: flex-start;
         margin-left: 0.5rem;
     }
     .tab {
@@ -211,10 +196,12 @@ a {
     .link-text {
         display: inline;
         margin-left: 1rem;
-        flex: 1;
+        font-size: larger;
+        flex: 0 0 auto;
     }
     .info-icon {
         display: inline;
+        padding-left: 0.5rem;
     }
     .tab-title {
         display: none;
