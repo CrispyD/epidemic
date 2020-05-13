@@ -1,24 +1,29 @@
 .all-content {
     width: 90%;
-    max-width: 500px;
+    max-width: 27rem;
     margin: auto;
+    padding-bottom: 2rem;
+}
+
+@media only screen and (min-width: 53rem) {
+    .all-content {
+        padding-bottom: 10rem;
+    }
 }
 
 .item-column {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
 }
 
 .link {
     width: 250px;
-    margin: 10px;
     display: flex;
-    justify-content: center;
 }
 
 .headding {
-    margin-top: 20px;
+    margin-top: 1.5rem;
     font-weight: bold;
     font-size: 12pt;
 }
