@@ -94,8 +94,7 @@ const xlim = [0, 244]
         ylim: [0, 4],
         xlim: xlim,
         lines:[
-            {label: 'R - true', x: 'days',  y: 'real_R0',   color: [yellow, yellow2],hidden:false},
-            {label: 'R - confirmed', x: 'days',  y: 'measured_R0', color:  [blue,blue2],hidden:false},
+            {label: 'R', x: 'days',  y: 'real_R0',   color: [yellow, yellow2],hidden:false},
         ],
     },
   ]
