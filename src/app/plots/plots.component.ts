@@ -113,7 +113,7 @@ export class PlotsComponent implements OnInit {
             this.plotData[pCount].ylim[0] = undefined;
             this.plotData[pCount].ylim[1] = undefined;
           } else {
-            this.plotData[pCount].formatData = (x) => postFix_kMBT(x,10);
+            this.plotData[pCount].formatData = (x) => postFix_kMBT(x,100);
           }
         }
 
