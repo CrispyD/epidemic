@@ -174,15 +174,15 @@ export class ConChartComponent extends LineChartComponent  {
   updateTimeout;
   lastUpdate = new Date().getTime();
 
-  @HostListener('window:keyup', ['$event'])
+  @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     let update=false
     if(this.activeControl){
-      if(event.keyCode == KEY_CODE.UP_ARROW){ this.activeIncrementValues() }
-      if(event.keyCode == KEY_CODE.DOWN_ARROW){ this.activeDecrementValues() }
-      if(event.keyCode == KEY_CODE.RIGHT_ARROW){ this.activeIncrementDays() }
-      if(event.keyCode == KEY_CODE.LEFT_ARROW){ this.activeDecrementDays() }
-    }
+      if(event.keyCode == KEY_CODE.UP_ARROW){ this.activeIncrementValues();event.preventDefault(); }
+      if(event.keyCode == KEY_CODE.DOWN_ARROW){ this.activeDecrementValues();event.preventDefault(); }
+      if(event.keyCode == KEY_CODE.RIGHT_ARROW){ this.activeIncrementDays();event.preventDefault(); }
+      if(event.keyCode == KEY_CODE.LEFT_ARROW){ this.activeDecrementDays();event.preventDefault(); }
+    } 
   }
 
   activeIncrementDays(){
