@@ -26,6 +26,9 @@
 .container {
     overflow-y: auto;
     padding-bottom: 17rem;
+    position: relative;
+    top: 0;
+    bottom: var(--tab-content-height);
 }
 
 button {
@@ -174,6 +177,8 @@ a {
     .container {
         margin-left: var(--tab-content-width);
         padding-bottom: unset;
+        position: relative;
+        height: 100%;
     }
     .nav-tabs {
         top: 4rem;
@@ -182,12 +187,19 @@ a {
         display: flex;
         flex-direction: column;
     }
+    .plots {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+    }
     .nav-link {
         grid-column: 1/6;
         align-items: center;
         grid-row-end: auto;
         justify-content: flex-start;
-        margin-left: 0.5rem;
+        padding-left: 0.5rem;
     }
     .tab {
         height: var(--tab-content-height);
